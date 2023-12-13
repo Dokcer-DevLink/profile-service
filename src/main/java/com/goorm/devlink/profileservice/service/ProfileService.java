@@ -2,6 +2,7 @@ package com.goorm.devlink.profileservice.service;
 
 import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
+import com.goorm.devlink.profileservice.entity.ProfileType;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import java.util.List;
 public interface ProfileService {
 
     String createProfile(ProfileDto profileDto);
+    ProfileEntity getMyProfile(String userUuid, ProfileType profileType);
+//    ProfileDto getProfileByProfileAndUserUuid(String profileUuid, String userUuid);
 
 //    private final ProfileRepository profileRepository;
 //

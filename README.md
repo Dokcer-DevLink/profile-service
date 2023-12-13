@@ -1,1 +1,1 @@
-# profileEntity-service
+# profile-service

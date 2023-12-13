@@ -1,5 +1,6 @@
 package com.goorm.devlink.profileservice.entity;
 
+import com.goorm.devlink.profileservice.dto.ProfileDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -57,4 +58,8 @@ public class ProfileEntity {
         this.stacks = stacks;
         this.address = address;
     }
+
+//    public ProfileDto convertToDto() {
+//        new ProfileDto(this.profileImageUrl, this.name, this.nickname, this.introduction, this.career, this.stacks, this.address);
+//    }
 }
