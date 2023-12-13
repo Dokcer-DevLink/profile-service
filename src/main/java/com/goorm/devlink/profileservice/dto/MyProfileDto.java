@@ -1,9 +1,7 @@
 package com.goorm.devlink.profileservice.dto;
 
-import com.goorm.devlink.profileservice.entity.Profile;
+import com.goorm.devlink.profileservice.entity.ProfileEntity;
 //import com.goorm.devlink.profileservice.entity.ProfileType;
-import com.goorm.devlink.profileservice.vo.ProfileDetailRequest;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -31,8 +29,8 @@ public class MyProfileDto {
         this.address = address;
     }
 
-    public Profile convertToEntity() {
-        Profile profileEntity = new Profile(imageUrl, name, nickname, introduction, stacks, address);
+    public ProfileEntity convertToEntity() {
+        ProfileEntity profileEntity = new ProfileEntity(imageUrl, name, nickname, introduction, stacks, address);
         return profileEntity;
     }
 }

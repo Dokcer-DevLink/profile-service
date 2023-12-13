@@ -10,7 +10,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {})
-public class Profile {
+public class ProfileEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "profile_id")
@@ -38,7 +38,7 @@ public class Profile {
 //    @Column(name = "is_deleted")
 //    private boolean isDeleted;
 
-    public Profile(String profileImageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
+    public ProfileEntity(String profileImageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
         this.profileImageUrl = profileImageUrl;
         this.name = name;
         this.nickname = nickname;
@@ -47,7 +47,7 @@ public class Profile {
         this.address = address;
     }
 
-    public Profile(String profileUuid, String userUuid, String profileImageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
+    public ProfileEntity(String profileUuid, String userUuid, String profileImageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
         this.profileUuid = profileUuid;
         this.userUuid = userUuid;
         this.profileImageUrl = profileImageUrl;
