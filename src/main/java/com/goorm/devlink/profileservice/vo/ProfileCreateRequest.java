@@ -1,13 +1,13 @@
 package com.goorm.devlink.profileservice.vo;
 
 import com.goorm.devlink.profileservice.entity.ProfileType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ProfileCreateRequest {
 
@@ -17,6 +17,6 @@ public class ProfileCreateRequest {
     private ProfileType profileType;
     private String introduction;
     private int career;
-    private List<String> stacks;
     private String address;
+    private List<String> stacks;
 }

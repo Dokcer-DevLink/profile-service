@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class ProfileDto {
 
     private String profileUuid;
@@ -23,51 +24,18 @@ public class ProfileDto {
     private ProfileType profileType;
     private String introduction;
     private int career; // is it years?
-    private List<String> stacks;
     private String address;
+    private List<String> stacks;
 
-//    public ProfileDto(String nickname) {
-//        this.nickname = nickname;
-//    }
-//
-    public ProfileDto(String profileImageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
+    public ProfileDto(String profileImageUrl, String name, String nickname, ProfileType profileType, String introduction, String address, List<String> stacks) {
         this.profileImageUrl = profileImageUrl;
         this.name = name;
         this.nickname = nickname;
+        this.profileType = profileType;
         this.introduction = introduction;
-        this.stacks = stacks;
         this.address = address;
-    }
-//
-//    public ProfileDto(String profileUuid, String profileImageUrl, String nickname, List<String> stacks, String address) {
-//        this.profileUuid = profileUuid;
-//        this.profileImageUrl = profileImageUrl;
-//        this.nickname = nickname;
-//        this.stacks = stacks;
-//        this.address = address;
-//    }
-//
-    public ProfileDto(String profileUuid, String userUuid, String profileImageUrl, String name, String nickname, String introduction, int career, List<String> stacks, String address) {
-        this.profileUuid = profileUuid;
-        this.userUuid = userUuid;
-        this.profileImageUrl = profileImageUrl;
-        this.name = name;
-        this.nickname = nickname;
-        this.introduction = introduction;
-        this.career = career;
         this.stacks = stacks;
-        this.address = address;
     }
-
-//    public ProfileEntity convertToEntity() {
-//        ProfileEntity profileEntity = new ProfileEntity(profileImageUrl, name, nickname, introduction, stacks, address);
-//        return profileEntity;
-//    }
-
-//    public ProfileDto convertEntityToDto(ProfileEntity profileEntity) {
-//        ProfileDto profileDto = new ProfileDto();
-//        profileEntity.getProfileImageUrl()
-//    }
 
     public static ProfileDto getInstanceForCreate(ProfileCreateRequest profileCreateRequest, String userUuid) {
         return ProfileDto.builder()
@@ -76,6 +44,7 @@ public class ProfileDto {
                 .profileImageUrl(profileCreateRequest.getProfileImageUrl())
                 .name(profileCreateRequest.getName())
                 .nickname(profileCreateRequest.getNickname())
+                .profileType(profileCreateRequest.getProfileType())
                 .introduction(profileCreateRequest.getIntroduction())
                 .career(profileCreateRequest.getCareer())
                 .stacks(profileCreateRequest.getStacks())
@@ -90,6 +59,7 @@ public class ProfileDto {
                 .profileImageUrl(profileDetailRequest.getProfileImageUrl())
                 .name(profileDetailRequest.getName())
                 .nickname(profileDetailRequest.getNickname())
+                .profileType(profileDetailRequest.getProfileType())
                 .introduction(profileDetailRequest.getIntroduction())
                 .career(profileDetailRequest.getCareer())
                 .stacks(profileDetailRequest.getStacks())

@@ -9,12 +9,25 @@ import com.goorm.devlink.profileservice.util.ModelMapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
     private final ModelMapperUtil modelMapperUtil;
+
+    @Override
+    public void testMethod() {
+        List<String> stacks = new ArrayList<>();
+        stacks.add("python");
+        stacks.add("django");
+        stacks.add("docker");
+        ProfileEntity testEntity = ProfileEntity.getInstanceTest(1, ProfileType.MENTOR, "useruuid1", stacks);
+        profileRepository.save(testEntity);
+    }
 
     @Override
     public String createProfile(ProfileDto profileDto) {
@@ -24,10 +37,31 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileEntity getMyProfile(String userUuid, ProfileType profileType) {
+    public ProfileDto getMyProfile(String userUuid, ProfileType profileType) {
         ProfileEntity profileEntity = profileRepository.findByUserUuidAndProfileType(userUuid, profileType);
+        ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
+        return profileDto;
+    }
 
-        return profileEntity;
+    @Override
+    public ProfileDto getProfileByUserUuidAndProfileUuid(String userUuid, String profileUuid) {
+        ProfileEntity profileEntity = profileRepository.findByUserUuidAndProfileUuid(userUuid, profileUuid);
+        ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
+        return profileDto;
+    }
+
+    @Override
+    public List<ProfileDto> getProfileListByKeyword(String keyword) {
+        List<ProfileEntity> profileEntityList = profileRepository.findProfilesByKeyword(keyword);
+        List<ProfileDto> profileDtoList = modelMapperUtil.convertToProfileDtoList(profileEntityList);
+//        List<ProfileDto> profileDtoList = profileRepository.findProfilesByKeyword(keyword);
+        return profileDtoList;
+    }
+
+    @Override
+    public void deleteProfileByUserAndProfileUuid(String userUuid, String profileUuid) {
+//        profileRepository.deleteProfileByUserUuidAndProfileUuid(userUuid, profileUuid);
+        profileRepository.deleteProfileByProfileUuid(profileUuid);
     }
 
 //    @Override
