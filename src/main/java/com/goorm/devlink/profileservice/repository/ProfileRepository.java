@@ -13,11 +13,11 @@ import java.util.List;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
-    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto(p.id, p.nickname) from Profile p")
-    ProfileDto findProfileDtoById(Long id);
+//    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto(p.id, p.nickname) from Profile p")
+//    ProfileDto findProfileDtoById(Long id);
 
-    @Query("select new com.goorm.devlink.profileservice.dto.MyProfileDto(p.id, p.imageUrl, p.name, p.nickname, p.introduction, p.stacks, p.address) from Profile p where p.id = :id")
-    MyProfileDto findMyProfileDtoById(@Param("id") Long id);
+    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto(p.id, p.imageUrl, p.name, p.nickname, p.introduction, p.stacks, p.address) from Profile p where p.id = :id")
+    ProfileDto findProfileDtoById(@Param("id") Long id);
 
     @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto(p.id, p.profileUuid, p.userUuid, p.imageUrl, p.name, p.nickname, p.introduction, p.stacks, p.address) " +
             "from Profile p where p.profileUuid = :profileUuid")

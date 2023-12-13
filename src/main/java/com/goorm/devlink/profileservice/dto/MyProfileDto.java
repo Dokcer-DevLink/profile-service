@@ -2,7 +2,11 @@ package com.goorm.devlink.profileservice.dto;
 
 import com.goorm.devlink.profileservice.entity.Profile;
 //import com.goorm.devlink.profileservice.entity.ProfileType;
+import com.goorm.devlink.profileservice.vo.ProfileDetailRequest;
+import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class MyProfileDto {
@@ -14,10 +18,10 @@ public class MyProfileDto {
 //    private Enum<ProfileType> profileType;
     private String introduction;
 //    private int career; // int?
-    private String stacks;
+    private List<String> stacks;
     private String address;
 
-    public MyProfileDto(Long id, String imageUrl, String name, String nickname, String introduction, String stacks, String address) {
+    public MyProfileDto(Long id, String imageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.name = name;

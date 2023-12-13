@@ -7,10 +7,11 @@ import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProfileService {
+public interface ProfileService {
 
     private final ProfileRepository profileRepository;
 
@@ -25,7 +26,7 @@ public class ProfileService {
         String name = "kim";
         String nickname = "kkk";
         String introduction = "hello kim";
-        String stacks = "#java #spring";
+        List<String> stacks = new ArrayList<>();//"#java #spring";
         String address = "seoul mapo";
 
         Profile profile = new Profile(profileUuid, userUuid, imageUrl, name, nickname, introduction, stacks, address);
@@ -47,18 +48,18 @@ public class ProfileService {
         return profilesByStackKeyword;
     }
 
-    public MyProfileDto getMyPageProfile(Long id) {
-        MyProfileDto myProfileDtoById = profileRepository.findMyProfileDtoById(id);
-        return myProfileDtoById;
+    public ProfileDto getMyPageProfile(Long id) {
+        ProfileDto profileDtoById = profileRepository.findProfileDtoById(id);
+        return profileDtoById;
     }
 
     public void save(Profile profile) {
         profileRepository.save(profile);
     }
 
-    public void saveMyProfile(MyProfileDto myProfileDto) {
+    public void saveMyProfile(ProfileDto profileDto) {
 
-        Profile profile = myProfileDto.convertToEntity();
+        Profile profile = profileDto.convertToEntity();
         profileRepository.save(profile);
     }
 

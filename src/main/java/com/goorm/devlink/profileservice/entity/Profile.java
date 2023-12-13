@@ -1,36 +1,36 @@
 package com.goorm.devlink.profileservice.entity;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 //import java.time.LocalDateTime;
 
 @Entity
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {})
 public class Profile {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "profile_id")
     private Long id;
     @Column(name = "profile_uuid")
     private String profileUuid;
     @Column(name = "user_uuid")
     private String userUuid;
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "profile_image_url", unique = true)
+    private String profileImageUrl;
     private String name;
     private String nickname;
     private String introduction;
-    //    private int career; // int?
-    private String stacks;
+    private int career; // is it years?
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> stacks;
     private String address;
-//    private Enum<ProfileType> type;
+    @Column(name = "profile_type")
+    @Enumerated(EnumType.STRING)
+    private ProfileType profileType;
 //    @Column(name = "created_at")
 //    private LocalDateTime createdAt;
 //    @Column(name = "modified_at")
@@ -38,13 +38,8 @@ public class Profile {
 //    @Column(name = "is_deleted")
 //    private boolean isDeleted;
 
-
-    public Profile(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public Profile(String imageUrl, String name, String nickname, String introduction, String stacks, String address) {
-        this.imageUrl = imageUrl;
+    public Profile(String profileImageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
+        this.profileImageUrl = profileImageUrl;
         this.name = name;
         this.nickname = nickname;
         this.introduction = introduction;
@@ -52,10 +47,10 @@ public class Profile {
         this.address = address;
     }
 
-    public Profile(String profileUuid, String userUuid, String imageUrl, String name, String nickname, String introduction, String stacks, String address) {
+    public Profile(String profileUuid, String userUuid, String profileImageUrl, String name, String nickname, String introduction, List<String> stacks, String address) {
         this.profileUuid = profileUuid;
         this.userUuid = userUuid;
-        this.imageUrl = imageUrl;
+        this.profileImageUrl = profileImageUrl;
         this.name = name;
         this.nickname = nickname;
         this.introduction = introduction;

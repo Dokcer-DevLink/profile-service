@@ -6,6 +6,7 @@ import com.goorm.devlink.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,19 +23,19 @@ public class ProfileController {
 
     /** 마이프로필 조회 **/
     @GetMapping("/api/myprofile")
-    public MyProfileDto viewMyProfilePage() {
+    public ProfileDto viewMyProfilePage() {
 
         Long profileId = 1L; // 테스트용
-        MyProfileDto myProfileDto = profileService.getMyPageProfile(profileId);
-        return myProfileDto;
+        ProfileDto profileDto = profileService.getMyPageProfile(profileId);
+        return profileDto;
     }
 
     /** 마이프로필 편집 **/
     @PostMapping("/api/myprofile")
-    public MyProfileDto editMyProfile(@RequestBody HashMap<String, Object> jsonObject, @RequestHeader("userUuid") String userUuid) {
-        MyProfileDto myProfileDto = convertJsonToMyProfileDto(jsonObject);
-        profileService.saveMyProfile(myProfileDto);
-        return myProfileDto;
+    public ProfileDto editMyProfile(@RequestBody HashMap<String, Object> jsonObject, @RequestHeader("userUuid") String userUuid) {
+        ProfileDto profileDto = convertJsonToMyProfileDto(jsonObject);
+        profileService.saveMyProfile(profileDto);
+        return profileDto;
     }
 
     /** 마이프로필 삭제 **/
@@ -59,14 +60,20 @@ public class ProfileController {
         return profileListByKeyword;
     }
 
-    private static MyProfileDto convertJsonToMyProfileDto(HashMap<String, Object> jsonObject) {
-        String imageUrl = jsonObject.get("imageUrl").toString();
+    private static ProfileDto convertJsonToMyProfileDto(HashMap<String, Object> jsonObject) {
+        String profileImageUrl = jsonObject.get("profileImageUrl").toString();
         String name = jsonObject.get("name").toString();
         String nickname = jsonObject.get("nickname").toString();
         String introduction = jsonObject.get("introduction").toString();
+//        List<String> stacks = jsonObject.get("stacks").
         String stacks = jsonObject.get("stacks").toString();
         String address = jsonObject.get("address").toString();
 
-        return new MyProfileDto(10L, imageUrl, name, nickname, introduction, stacks, address);
+        return new ProfileDto(profileImageUrl, name, nickname, introduction, stacks, address);
+    }
+
+    private static HashMap<String, Object> convert(Object obj) {
+        List<String> a = new ArrayList<>();
+
     }
 }
