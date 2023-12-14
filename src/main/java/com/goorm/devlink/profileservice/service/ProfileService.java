@@ -19,7 +19,7 @@ public interface ProfileService {
 
     ProfileDto getProfileByUserUuidAndProfileUuid(String userUuid, String profileUuid);
 
-    List<ProfileDto> getProfileListByKeyword(String keyword);
+    List<ProfileDto> getProfileListByTypeAndKeyword(ProfileType profileType, String keyword);
 
     public void deleteProfileByUserAndProfileUuid(String userUuid, String profileUuid);
 }

@@ -55,8 +55,8 @@ public class ProfileController {
 
     /** 프로필 리스트(검색) 조회 **/
     @GetMapping("/api/profile/list")
-    public List<ProfileDto> viewProfilePage(@RequestParam("keyword") String keyword) {
-        List<ProfileDto> profileListByKeyword = profileService.getProfileListByKeyword(keyword);
+    public List<ProfileDto> viewProfilePage(@RequestParam("profileType") ProfileType profileType, @RequestParam("keyword") String keyword) {
+        List<ProfileDto> profileListByKeyword = profileService.getProfileListByTypeAndKeyword(profileType, keyword);
         return profileListByKeyword;
     }
 }

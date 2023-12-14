@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {
+public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, ProfileRepositoryCustom {
 
     // 마이프로필 조회 : RequestHeader(userUuid), RequestParamter(profileType)
     ProfileEntity findByUserUuidAndProfileType(@Param("userUuid") String userUuid, @Param("profileType") ProfileType profileType);
@@ -32,8 +32,10 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {
 
     // stack + address 검색 구현 실패
     // stack만 검색도 실패. Collection 타입은 String 검색이 안됨.
-    @Query("select p from ProfileEntity p where (p.stacks like %:keyword%)")// or p.address like %:keyword%)")
-    List<ProfileEntity> findProfilesByKeyword(@Param("keyword") String keyword);
+//    @Query("select p from ProfileEntity p where (p.stacks like %:keyword%)")// or p.address like %:keyword%)")
+//    List<ProfileEntity> findProfilesByKeyword(@Param("keyword") String keyword);
+    @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND p.profileType = :profileType")
+    List<ProfileEntity> findProfileListByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword);
 
 //    RequestHeader(userUuid), RequestParamter(profileUuid) 둘 다 필요한데 에러발생으로 우선 profileUuid만 사용
 //    @Transactional

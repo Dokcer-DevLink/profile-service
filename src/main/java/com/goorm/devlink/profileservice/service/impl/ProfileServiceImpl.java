@@ -51,8 +51,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<ProfileDto> getProfileListByKeyword(String keyword) {
-        List<ProfileEntity> profileEntityList = profileRepository.findProfilesByKeyword(keyword);
+    public List<ProfileDto> getProfileListByTypeAndKeyword(ProfileType profileType, String keyword) {
+//        List<ProfileEntity> profileEntityList = profileRepository.findProfilesByKeyword(keyword);
+        List<ProfileEntity> profileEntityList = profileRepository.findProfileListByStackKeyword(profileType, keyword);
         List<ProfileDto> profileDtoList = modelMapperUtil.convertToProfileDtoList(profileEntityList);
 //        List<ProfileDto> profileDtoList = profileRepository.findProfilesByKeyword(keyword);
         return profileDtoList;
