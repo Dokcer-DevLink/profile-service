@@ -26,8 +26,8 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {
 //    ProfileDto findByProfileAndUserUuid(@Param("profileUuid") String profileUuid, @Param("userUuid") String userUuid);
 
 //    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto" +
-//            "(p.profileUuid, p.userUuid, p.profileImageUrl, p.name, p.nickname, p.profileType, p.introduction, p.career, p.address) "+//, p.stacks) " +
-//            "from ProfileEntity p where (p.address like %:keyword%)")// or p.address like %:keyword%)")
+//            "(p.profileUuid, p.userUuid, p.profileImageUrl, p.name, p.nickname, p.profileType, p.introduction, p.career, p.address, p.stacks) " +
+//            "from ProfileEntity p where (p.address like %:keyword% or p.address like %:keyword%)")
 //    List<ProfileDto> findProfilesByKeyword(@Param("keyword") String keyword);
 
     // stack + address 검색 구현 실패
