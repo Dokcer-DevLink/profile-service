@@ -15,6 +15,11 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Grant Execute Permission') {
+            steps {
+                sh 'chmod +x gradlew'
+            }
+        }
         stage('Spring APP Build') {
             steps {
                 sh './gradlew bootJar'
