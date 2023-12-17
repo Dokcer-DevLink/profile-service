@@ -6,6 +6,7 @@ import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.vo.ProfileCommentResponse;
 import com.goorm.devlink.profileservice.vo.ProfileCreateRequest;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,15 +24,9 @@ public class ProfileController {
     private ProfileService profileService;
     private S3UploadService s3UploadService;
 
-    // BeanCreationException 에러 발생으로 주석 처리
-//    @Autowired
-//    public ProfileController(ProfileService profileService) {
-//        this.profileService = profileService;
-//        profileService.testMethod();
-//    }
-
     @Autowired
-    public ProfileController(S3UploadService s3UploadService) {
+    public ProfileController(ProfileService profileService, S3UploadService s3UploadService) {
+        this.profileService = profileService;
         this.s3UploadService = s3UploadService;
     }
 
@@ -44,9 +39,9 @@ public class ProfileController {
 
     /** 마이프로필 생성 **/
     @PostMapping("/api/myprofile")
-    public ResponseEntity<ProfileCommentResponse> createMyProfile(@RequestBody ProfileCreateRequest profileCreateRequest,
-                                                                  @RequestHeader("userUuid") String userUuid,
-                                                                  @RequestPart("file") MultipartFile file) throws IOException {
+    public ResponseEntity<ProfileCommentResponse> createMyProfile(@RequestPart("data") ProfileCreateRequest profileCreateRequest,
+                                                                  @RequestPart("file") MultipartFile file,
+                                                                  @RequestHeader("userUuid") String userUuid) throws IOException {
 
         String s3FileUrl = s3UploadService.saveFile(file);
 
