@@ -55,6 +55,7 @@ public class ProfileDto {
         return ProfileDto.builder()
                 .profileUuid(profileDetailRequest.getProfileUuid())
                 .userUuid(profileDetailRequest.getUserUuid())
+                .profileImageUrl(profileDetailRequest.getProfileImageUrl())
                 .name(profileDetailRequest.getName())
                 .nickname(profileDetailRequest.getNickname())
                 .profileType(profileDetailRequest.getProfileType())

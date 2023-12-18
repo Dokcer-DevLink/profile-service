@@ -44,9 +44,4 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, P
 //    void deleteProfileByUserUuidAndProfileUuid(@Param("userUuid") String userUuid, @Param("profileUuid") String profileUuid);
     @Transactional
     void deleteProfileByProfileUuid(String profileUuid);
-
-//    @Transactional
-//    @Modifying
-//    @Query("UPDATE ProfileEntity p SET p.profileImageInfo = ?2 WHERE p.profileImageUrl = ?1")
-//    void updateProfileImageInfo(String profileImageUrl, ProfileImageInfoEntity profileImageInfoEntity);
 }

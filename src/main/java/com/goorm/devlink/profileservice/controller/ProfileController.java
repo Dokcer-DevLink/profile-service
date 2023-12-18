@@ -49,6 +49,19 @@ public class ProfileController {
         return new ResponseEntity<>(ProfileCommentResponse.getInstanceForCreate(profileUuid), HttpStatus.CREATED);
     }
 
+//    /** 마이프로필 수정 **/
+//    @PatchMapping("/api/myprofile")
+//    public ResponseEntity<ProfileCommentResponse> editMyProfile(@RequestPart("data") ProfileCreateRequest profileCreateRequest,
+//                                                                  @RequestPart("file") MultipartFile file,
+//                                                                  @RequestHeader("userUuid") String userUuid) throws IOException {
+//
+//        String profileImageUrl = s3UploadService.saveFile(file);
+//
+//        ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, profileImageUrl, userUuid);
+//        String profileUuid = profileService.createProfile(profileDto);
+//        return new ResponseEntity<>(ProfileCommentResponse.getInstanceForCreate(profileUuid), HttpStatus.CREATED);
+//    }
+
     /** 마이프로필 삭제 **/
     @DeleteMapping("/api/myprofile")
     public String deleteMyProfile(@RequestHeader("userUuid") String userUuid, @RequestParam("profileUuid") String profileUuid) {
@@ -68,5 +81,15 @@ public class ProfileController {
     public List<ProfileDto> viewProfilePage(@RequestParam("profileType") ProfileType profileType, @RequestParam("keyword") String keyword) {
         List<ProfileDto> profileListByKeyword = profileService.getProfileListByTypeAndKeyword(profileType, keyword);
         return profileListByKeyword;
+    }
+
+    /**
+     * 유저 스택 리스트 조회
+     **/
+    @GetMapping("/api/profile/stacks")
+    public List<String> viewUserStackList(@RequestHeader("userUuid") String userUuid, @RequestParam("profileUuid") String profileUuid) {
+        ProfileDto profileDto = profileService.getProfileByUserUuidAndProfileUuid(userUuid, profileUuid);
+        List<String> stacks = profileDto.getStacks();
+        return stacks;
     }
 }
