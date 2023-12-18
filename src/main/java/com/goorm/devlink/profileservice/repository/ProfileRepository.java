@@ -1,9 +1,9 @@
 package com.goorm.devlink.profileservice.repository;
 
-import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ProfileType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,4 +44,9 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, P
 //    void deleteProfileByUserUuidAndProfileUuid(@Param("userUuid") String userUuid, @Param("profileUuid") String profileUuid);
     @Transactional
     void deleteProfileByProfileUuid(String profileUuid);
+
+//    @Transactional
+//    @Modifying
+//    @Query("UPDATE ProfileEntity p SET p.profileImageInfo = ?2 WHERE p.profileImageUrl = ?1")
+//    void updateProfileImageInfo(String profileImageUrl, ProfileImageInfoEntity profileImageInfoEntity);
 }

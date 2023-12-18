@@ -1,6 +1,5 @@
 package com.goorm.devlink.profileservice.dto;
 
-import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ProfileType;
 import com.goorm.devlink.profileservice.vo.ProfileCreateRequest;
 import com.goorm.devlink.profileservice.vo.ProfileDetailRequest;
@@ -37,11 +36,11 @@ public class ProfileDto {
         this.stacks = stacks;
     }
 
-    public static ProfileDto getInstanceForCreate(ProfileCreateRequest profileCreateRequest, String userUuid) {
+    public static ProfileDto getInstanceForCreate(ProfileCreateRequest profileCreateRequest, String profileImageUrl, String userUuid) {
         return ProfileDto.builder()
                 .profileUuid(UUID.randomUUID().toString())
                 .userUuid(userUuid)
-                .profileImageUrl(profileCreateRequest.getProfileImageUrl())
+                .profileImageUrl(profileImageUrl)
                 .name(profileCreateRequest.getName())
                 .nickname(profileCreateRequest.getNickname())
                 .profileType(profileCreateRequest.getProfileType())
@@ -56,7 +55,6 @@ public class ProfileDto {
         return ProfileDto.builder()
                 .profileUuid(profileDetailRequest.getProfileUuid())
                 .userUuid(profileDetailRequest.getUserUuid())
-                .profileImageUrl(profileDetailRequest.getProfileImageUrl())
                 .name(profileDetailRequest.getName())
                 .nickname(profileDetailRequest.getNickname())
                 .profileType(profileDetailRequest.getProfileType())

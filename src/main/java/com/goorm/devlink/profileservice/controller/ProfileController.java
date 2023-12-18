@@ -6,7 +6,6 @@ import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.vo.ProfileCommentResponse;
 import com.goorm.devlink.profileservice.vo.ProfileCreateRequest;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,9 +42,9 @@ public class ProfileController {
                                                                   @RequestPart("file") MultipartFile file,
                                                                   @RequestHeader("userUuid") String userUuid) throws IOException {
 
-        String s3FileUrl = s3UploadService.saveFile(file);
+        String profileImageUrl = s3UploadService.saveFile(file);
 
-        ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, userUuid);
+        ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, profileImageUrl, userUuid);
         String profileUuid = profileService.createProfile(profileDto);
         return new ResponseEntity<>(ProfileCommentResponse.getInstanceForCreate(profileUuid), HttpStatus.CREATED);
     }

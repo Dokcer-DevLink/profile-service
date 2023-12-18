@@ -1,12 +1,9 @@
 package com.goorm.devlink.profileservice.repository.impl;
 
-import com.goorm.devlink.profileservice.entity.ProfileEntity;
-import com.goorm.devlink.profileservice.entity.ProfileType;
 import com.goorm.devlink.profileservice.repository.ProfileRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 //import static com.goorm.devlink.profileservice.entity.QProfileEntity.profileEntity;
 

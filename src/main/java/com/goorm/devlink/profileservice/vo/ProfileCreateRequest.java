@@ -11,7 +11,6 @@ import java.util.List;
 @Builder
 public class ProfileCreateRequest {
 
-    private String profileImageUrl;
     private String name;
     private String nickname;
     private ProfileType profileType;

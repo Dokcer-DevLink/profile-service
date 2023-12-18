@@ -22,7 +22,6 @@ public class S3UploadService {
     private String bucketName;
 
     public String saveFile(MultipartFile multipartFile) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
@@ -30,8 +29,6 @@ public class S3UploadService {
 
         UploadFile uploadFile = uploadFileGenerator.generate(multipartFile);
         String storeFilename = uploadFile.getStoreFilename();
-
-        // DB 저장 //
 
         amazonS3.putObject(bucketName, storeFilename, multipartFile.getInputStream(), metadata);
         return amazonS3.getUrl(bucketName, storeFilename).toString();

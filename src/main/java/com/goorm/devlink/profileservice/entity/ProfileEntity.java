@@ -48,8 +48,8 @@ public class ProfileEntity {
 //    @Column(name = "is_deleted")
 //    private boolean isDeleted;
 
-    public ProfileEntity(String profileImageUrl, String name, String nickname, String introduction, String address, List<String> stacks) {
-        this.profileImageUrl = profileImageUrl;
+    public ProfileEntity(String name, String nickname, String introduction, String address, List<String> stacks) {
+//        this.profileImageUrl = profileImageUrl;
         this.name = name;
         this.nickname = nickname;
         this.introduction = introduction;
@@ -57,10 +57,10 @@ public class ProfileEntity {
         this.stacks = stacks;
     }
 
-    public ProfileEntity(String profileUuid, String userUuid, String profileImageUrl, String name, String nickname, String introduction, String address, List<String> stacks) {
+    public ProfileEntity(String profileUuid, String userUuid, String name, String nickname, String introduction, String address, List<String> stacks) {
         this.profileUuid = profileUuid;
         this.userUuid = userUuid;
-        this.profileImageUrl = profileImageUrl;
+//        this.profileImageUrl = profileImageUrl;
         this.name = name;
         this.nickname = nickname;
         this.introduction = introduction;
@@ -76,7 +76,7 @@ public class ProfileEntity {
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setUserUuid(userUuid);
         profileEntity.setProfileUuid(UUID.randomUUID().toString());
-        profileEntity.setProfileImageUrl("profile_image_url");
+//        profileEntity.setProfileImageUrl("profile_image_url");
         profileEntity.setName("name");
         profileEntity.setNickname("nickname");
         profileEntity.setIntroduction("introduction");
