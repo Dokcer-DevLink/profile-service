@@ -6,6 +6,7 @@ import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.vo.ProfileCommentResponse;
 import com.goorm.devlink.profileservice.vo.ProfileCreateRequest;
+import com.goorm.devlink.profileservice.vo.ProfileSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,13 +84,19 @@ public class ProfileController {
         return profileListByKeyword;
     }
 
-    /**
-     * 유저 스택 리스트 조회
-     **/
+    /** 유저 스택 리스트 조회 **/
     @GetMapping("/api/profile/stacks")
     public List<String> viewUserStackList(@RequestHeader("userUuid") String userUuid, @RequestParam("profileUuid") String profileUuid) {
         ProfileDto profileDto = profileService.getProfileByUserUuidAndProfileUuid(userUuid, profileUuid);
         List<String> stacks = profileDto.getStacks();
         return stacks;
+    }
+
+    /** 간단한 유저 정보(프로필이미지 URL, 닉네임) 조회 **/
+    @GetMapping("/api/profile/simpleInfo")
+    public ProfileSimpleResponse viewUserSimpleInfo(@RequestHeader("userUuid") String userUuid, @RequestParam("profileUuid") String profileUuid) {
+        ProfileDto profileDto = profileService.getProfileByUserUuidAndProfileUuid(userUuid, profileUuid);
+        ProfileSimpleResponse profileSimpleResponse = new ProfileSimpleResponse(profileUuid, profileDto.getProfileImageUrl(), profileDto.getNickname());
+        return profileSimpleResponse;
     }
 }
