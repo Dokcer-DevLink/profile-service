@@ -17,7 +17,7 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, P
     // 마이프로필 조회 : RequestHeader(userUuid), RequestParamter(profileType)
     ProfileEntity findByUserUuidAndProfileType(@Param("userUuid") String userUuid, @Param("profileType") ProfileType profileType);
 
-    ProfileEntity findByUserUuidAndProfileUuid(@Param("userUuid") String userUuid, @Param("profileUuid") String profileUuid);
+    ProfileEntity findByUserUuid(@Param("userUuid") String userUuid);
 
 //    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto(p.profileUuid, p.userUuid, p.profileImageUrl, p.name, p.nickname, p.introduction, p.stacks, p.address) " +
 //            "from ProfileEntity p where p.profileUuid = :profileUuid")
@@ -48,5 +48,5 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, P
 //    @Query("delete from ProfileEntity p where (p.userUuid = :userUuid and p.profileUuid = :profileUuid)")
 //    void deleteProfileByUserUuidAndProfileUuid(@Param("userUuid") String userUuid, @Param("profileUuid") String profileUuid);
     @Transactional
-    void deleteProfileByProfileUuid(String profileUuid);
+    void deleteProfileByUserUuid(String userUuid);
 }

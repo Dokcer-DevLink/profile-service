@@ -7,12 +7,12 @@ import lombok.Getter;
 @Builder
 public class ProfileCommentResponse {
 
-    private String profileUuid;
+    private String userUuid;
     private String message;
 
-    public static ProfileCommentResponse getInstanceForCreate(String profileUuid) {
+    public static ProfileCommentResponse getInstanceForCreate(String userUuid) {
         return ProfileCommentResponse.builder()
-                .profileUuid(profileUuid)
+                .userUuid(userUuid)
                 .message("Profile is created.")
                 .build();
     }

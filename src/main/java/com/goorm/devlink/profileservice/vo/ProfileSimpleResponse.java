@@ -9,13 +9,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ProfileSimpleResponse {
 
-    String profileUuid;
+    String userUuid;
     String profileImageUrl;
     String nickname;
 
-    public static ProfileSimpleResponse getInstance(String profileUuid, String profileImageUrl, String nickname) {
+    public static ProfileSimpleResponse getInstance(String userUuid, String profileImageUrl, String nickname) {
         return ProfileSimpleResponse.builder()
-                .profileUuid(profileUuid)
+                .userUuid(userUuid)
                 .profileImageUrl(profileImageUrl)
                 .nickname(nickname)
                 .build();

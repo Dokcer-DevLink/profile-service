@@ -1,6 +1,5 @@
 package com.goorm.devlink.profileservice.entity;
 
-import com.goorm.devlink.profileservice.dto.ProfileDto;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -8,7 +7,6 @@ import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 //import java.time.LocalDateTime;
 
@@ -22,8 +20,6 @@ public class ProfileEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "profile_id")
     private Long id;
-    @Column(name = "profile_uuid")
-    private String profileUuid;
     @Column(name = "user_uuid")
     private String userUuid;
     @Column(name = "profile_image_url", unique = true)
@@ -57,8 +53,7 @@ public class ProfileEntity {
         this.stacks = stacks;
     }
 
-    public ProfileEntity(String profileUuid, String userUuid, String name, String nickname, String introduction, String address, List<String> stacks) {
-        this.profileUuid = profileUuid;
+    public ProfileEntity(String userUuid, String name, String nickname, String introduction, String address, List<String> stacks) {
         this.userUuid = userUuid;
 //        this.profileImageUrl = profileImageUrl;
         this.name = name;
@@ -68,14 +63,9 @@ public class ProfileEntity {
         this.stacks = stacks;
     }
 
-//    public ProfileDto convertToDto() {
-//        new ProfileDto(this.profileImageUrl, this.name, this.nickname, this.introduction, this.career, this.stacks, this.address);
-//    }
-
     public static ProfileEntity getInstanceTest(int i, ProfileType profileType, String userUuid, List<String> stacks){
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setUserUuid(userUuid);
-        profileEntity.setProfileUuid(UUID.randomUUID().toString());
         profileEntity.setProfileImageUrl("profile_image_url" + i);
         profileEntity.setName("name" + i);
         profileEntity.setNickname("nickname" + i);

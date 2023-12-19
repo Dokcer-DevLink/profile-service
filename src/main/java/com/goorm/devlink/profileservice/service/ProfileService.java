@@ -12,10 +12,10 @@ public interface ProfileService {
 
     void testMethod();
 
-    String createProfile(ProfileDto profileDto);
+    void createProfile(ProfileDto profileDto);
     ProfileDto getMyProfile(String userUuid, ProfileType profileType);
 
-    ProfileDto getProfileByUserUuidAndProfileUuid(String userUuid, String profileUuid);
+    ProfileDto getProfileByUserUuid(String userUuid);
 
     List<ProfileDto> getProfileListByTypeAndKeyword(ProfileType profileType, String keyword);
 
@@ -23,5 +23,5 @@ public interface ProfileService {
 
     Slice<ProfileSimpleCardResponse> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber);
 
-    void deleteProfileByUserAndProfileUuid(String userUuid, String profileUuid);
+    void deleteProfileByUserUuid(String userUuid);
 }

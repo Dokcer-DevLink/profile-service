@@ -6,7 +6,6 @@ import com.goorm.devlink.profileservice.vo.ProfileDetailRequest;
 import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Getter
@@ -15,7 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProfileDto {
 
-    private String profileUuid;
     private String userUuid;
     private String profileImageUrl;
     private String name;
@@ -38,7 +36,6 @@ public class ProfileDto {
 
     public static ProfileDto getInstanceForCreate(ProfileCreateRequest profileCreateRequest, String profileImageUrl, String userUuid) {
         return ProfileDto.builder()
-                .profileUuid(UUID.randomUUID().toString())
                 .userUuid(userUuid)
                 .profileImageUrl(profileImageUrl)
                 .name(profileCreateRequest.getName())
@@ -53,7 +50,6 @@ public class ProfileDto {
 
     public static ProfileDto getInstanceForEdit(ProfileDetailRequest profileDetailRequest) {
         return ProfileDto.builder()
-                .profileUuid(profileDetailRequest.getProfileUuid())
                 .userUuid(profileDetailRequest.getUserUuid())
                 .profileImageUrl(profileDetailRequest.getProfileImageUrl())
                 .name(profileDetailRequest.getName())

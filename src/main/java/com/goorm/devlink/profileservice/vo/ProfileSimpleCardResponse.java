@@ -13,15 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileSimpleCardResponse {
 
-    String profileUuid;
+    String userUuid;
     String profileImageUrl;
     String nickname;
     String address;
     List<String> stacks;
 
-    public static ProfileSimpleCardResponse getInstance(String profileUuid, String profileImageUrl, String nickname, String address, List<String> stacks) {
+    public static ProfileSimpleCardResponse getInstance(String userUuid, String profileImageUrl, String nickname, String address, List<String> stacks) {
         return ProfileSimpleCardResponse.builder()
-                .profileUuid(profileUuid)
+                .userUuid(userUuid)
                 .profileImageUrl(profileImageUrl)
                 .nickname(nickname)
                 .address(address)

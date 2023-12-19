@@ -34,7 +34,7 @@ public class ModelMapperUtil {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 //        ProfileSimpleCardResponse profileSimpleCardResponse = mapper.map(profileEntity, ProfileSimpleCardResponse.class);
         ProfileSimpleCardResponse profileSimpleCardResponse = new ProfileSimpleCardResponse(
-                profileEntity.getProfileUuid(), profileEntity.getProfileImageUrl(), profileEntity.getNickname(), profileEntity.getAddress(), profileEntity.getStacks());
+                profileEntity.getUserUuid(), profileEntity.getProfileImageUrl(), profileEntity.getNickname(), profileEntity.getAddress(), profileEntity.getStacks());
         return profileSimpleCardResponse;
     }
 

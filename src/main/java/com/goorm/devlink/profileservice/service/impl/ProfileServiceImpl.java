@@ -9,7 +9,6 @@ import com.goorm.devlink.profileservice.util.ModelMapperUtil;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
@@ -59,10 +58,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public String createProfile(ProfileDto profileDto) {
+    public void createProfile(ProfileDto profileDto) {
         ProfileEntity profileEntity = modelMapperUtil.convertToProfileEntity(profileDto);
         profileRepository.save(profileEntity);
-        return profileEntity.getProfileUuid();
     }
 
     @Override
@@ -73,18 +71,16 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileDto getProfileByUserUuidAndProfileUuid(String userUuid, String profileUuid) {
-        ProfileEntity profileEntity = profileRepository.findByUserUuidAndProfileUuid(userUuid, profileUuid);
+    public ProfileDto getProfileByUserUuid(String userUuid) {
+        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
         ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
         return profileDto;
     }
 
     @Override
     public List<ProfileDto> getProfileListByTypeAndKeyword(ProfileType profileType, String keyword) {
-//        List<ProfileEntity> profileEntityList = profileRepository.findProfilesByKeyword(keyword);
         List<ProfileEntity> profileEntityList = profileRepository.findProfileListByStackKeyword(profileType, keyword);
         List<ProfileDto> profileDtoList = modelMapperUtil.convertToProfileDtoList(profileEntityList);
-//        List<ProfileDto> profileDtoList = profileRepository.findProfilesByKeyword(keyword);
         return profileDtoList;
     }
 
@@ -103,9 +99,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void deleteProfileByUserAndProfileUuid(String userUuid, String profileUuid) {
-//        profileRepository.deleteProfileByUserUuidAndProfileUuid(userUuid, profileUuid);
-        profileRepository.deleteProfileByProfileUuid(profileUuid);
+    public void deleteProfileByUserUuid(String userUuid) {
+        profileRepository.deleteProfileByUserUuid(userUuid);
     }
 
 //    @Override
