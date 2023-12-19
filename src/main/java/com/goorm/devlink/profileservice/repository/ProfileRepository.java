@@ -2,6 +2,8 @@ package com.goorm.devlink.profileservice.repository;
 
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ProfileType;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -36,6 +38,9 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, P
 //    List<ProfileEntity> findProfilesByKeyword(@Param("keyword") String keyword);
     @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND p.profileType = :profileType")
     List<ProfileEntity> findProfileListByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword);
+
+    @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND p.profileType = :profileType") // s.stacks = :keyword
+    Slice<ProfileEntity> findSliceByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword, Pageable pageable);
 
 //    RequestHeader(userUuid), RequestParamter(profileUuid) 둘 다 필요한데 에러발생으로 우선 profileUuid만 사용
 //    @Transactional

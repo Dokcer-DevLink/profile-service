@@ -13,7 +13,7 @@ public class ProfileSimpleResponse {
     String profileImageUrl;
     String nickname;
 
-    public static ProfileSimpleResponse getInstanceForShowSimple(String profileUuid, String profileImageUrl, String nickname) {
+    public static ProfileSimpleResponse getInstance(String profileUuid, String profileImageUrl, String nickname) {
         return ProfileSimpleResponse.builder()
                 .profileUuid(profileUuid)
                 .profileImageUrl(profileImageUrl)

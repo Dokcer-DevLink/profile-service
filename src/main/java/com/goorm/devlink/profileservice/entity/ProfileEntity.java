@@ -76,12 +76,12 @@ public class ProfileEntity {
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setUserUuid(userUuid);
         profileEntity.setProfileUuid(UUID.randomUUID().toString());
-//        profileEntity.setProfileImageUrl("profile_image_url");
-        profileEntity.setName("name");
-        profileEntity.setNickname("nickname");
-        profileEntity.setIntroduction("introduction");
-        profileEntity.setCareer(2);
-        profileEntity.setProfileType(ProfileType.MENTOR);
+        profileEntity.setProfileImageUrl("profile_image_url" + i);
+        profileEntity.setName("name" + i);
+        profileEntity.setNickname("nickname" + i);
+        profileEntity.setIntroduction("introduction" + i);
+        profileEntity.setCareer(i%5);
+        profileEntity.setProfileType(i%2==0?ProfileType.MENTOR:ProfileType.MENTEE);
         profileEntity.setAddress("address"+i);
         profileEntity.stacks = stacks;
 
