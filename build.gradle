@@ -26,8 +26,17 @@ configurations {
 	}
 }
 
+bootJar {
+	archiveFileName = 'profile-service.jar'
+}
+
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+ext {
+	set('springCloudVersion', "2021.0.8")
 }
 
 dependencies {
@@ -44,6 +53,17 @@ dependencies {
 	implementation "com.querydsl:querydsl-core:${queryDslVersion}"
 	// AWS S3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// Spring Cloud
+	// Spring Cloud Config 라이브러리
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 tasks.named('test') {
