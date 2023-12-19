@@ -1,5 +1,6 @@
 package com.goorm.devlink.profileservice.repository;
 
+import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ProfileType;
 import org.springframework.data.domain.Pageable;
@@ -19,19 +20,6 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, P
 
     ProfileEntity findByUserUuid(@Param("userUuid") String userUuid);
 
-//    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto(p.profileUuid, p.userUuid, p.profileImageUrl, p.name, p.nickname, p.introduction, p.stacks, p.address) " +
-//            "from ProfileEntity p where p.profileUuid = :profileUuid")
-//    ProfileDto findByProfileUuid(@Param("profileUuid") String profileUuid);
-//
-//    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto(p.profileUuid, p.userUuid, p.profileImageUrl, p.name, p.nickname, p.introduction, p.stacks, p.address) " +
-//            "from ProfileEntity p where p.profileUuid = :profileUuid and p.userUuid = :userUuid")
-//    ProfileDto findByProfileAndUserUuid(@Param("profileUuid") String profileUuid, @Param("userUuid") String userUuid);
-
-//    @Query("select new com.goorm.devlink.profileservice.dto.ProfileDto" +
-//            "(p.profileUuid, p.userUuid, p.profileImageUrl, p.name, p.nickname, p.profileType, p.introduction, p.career, p.address, p.stacks) " +
-//            "from ProfileEntity p where (p.address like %:keyword% or p.address like %:keyword%)")
-//    List<ProfileDto> findProfilesByKeyword(@Param("keyword") String keyword);
-
     // stack + address 검색 구현 실패
     // stack만 검색도 실패. Collection 타입은 String 검색이 안됨.
 //    @Query("select p from ProfileEntity p where (p.stacks like %:keyword%)")// or p.address like %:keyword%)")
@@ -47,6 +35,15 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, P
 //    @Modifying(clearAutomatically = true)
 //    @Query("delete from ProfileEntity p where (p.userUuid = :userUuid and p.profileUuid = :profileUuid)")
 //    void deleteProfileByUserUuidAndProfileUuid(@Param("userUuid") String userUuid, @Param("profileUuid") String profileUuid);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE ProfileEntity p " +
+            "SET p.profileImageUrl = :#{#profileEntity.profileImageUrl}, p.name = :#{#profileEntity.name}, p.nickname = :#{#profileEntity.nickname}, " +
+            "p.introduction = :#{#profileEntity.introduction}, p.career = :#{#profileEntity.career}, p.profileType = :#{#profileEntity.profileType}, " +
+            "p.address = :#{#profileEntity.address}, p.stacks = :#{#profileEntity.stacks} WHERE p.userUuid = :#{#profileEntity.userUuid}")
+    void updateByProfileEntity(@Param("profileEntity") ProfileEntity profileEntity);
+
     @Transactional
     void deleteProfileByUserUuid(String userUuid);
 }

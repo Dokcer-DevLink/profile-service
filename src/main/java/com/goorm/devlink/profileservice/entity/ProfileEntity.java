@@ -1,8 +1,6 @@
 package com.goorm.devlink.profileservice.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,7 +33,6 @@ public class ProfileEntity {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "stack", joinColumns = @JoinColumn(name = "profile_id"))
-//    @Cascade({CascadeType.REMOVE})
     private List<String> stacks;
 //    @Column(name = "created_at")
 //    private LocalDateTime createdAt;

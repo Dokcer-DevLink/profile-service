@@ -1,19 +1,16 @@
 package com.goorm.devlink.profileservice.vo;
 
 import com.goorm.devlink.profileservice.entity.ProfileType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class ProfileDetailRequest {
+public class ProfileEditRequest {
 
-    private String profileUuid;
-    private String userUuid;
-    private String profileImageUrl;
     private String name;
     private String nickname;
     private ProfileType profileType;

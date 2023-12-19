@@ -4,10 +4,7 @@ import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.entity.ProfileType;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
-import com.goorm.devlink.profileservice.vo.ProfileCommentResponse;
-import com.goorm.devlink.profileservice.vo.ProfileCreateRequest;
-import com.goorm.devlink.profileservice.vo.ProfileSimpleCardResponse;
-import com.goorm.devlink.profileservice.vo.ProfileSimpleResponse;
+import com.goorm.devlink.profileservice.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
@@ -46,25 +43,28 @@ public class ProfileController {
                                                                   @RequestPart("file") MultipartFile file,
                                                                   @RequestHeader("userUuid") String userUuid) throws IOException {
 
-        String profileImageUrl = s3UploadService.saveFile(file);
+//        String profileImageUrl = s3UploadService.saveFile(file);
 
-        ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, profileImageUrl, userUuid);
+        ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, "default-profileImageUrl", userUuid);
         profileService.createProfile(profileDto);
         return new ResponseEntity<>(ProfileCommentResponse.getInstanceForCreate(userUuid), HttpStatus.CREATED);
     }
 
-//    /** 마이프로필 수정 **/
-//    @PatchMapping("/api/myprofile")
-//    public ResponseEntity<ProfileCommentResponse> editMyProfile(@RequestPart("data") ProfileCreateRequest profileCreateRequest,
-//                                                                  @RequestPart("file") MultipartFile file,
-//                                                                  @RequestHeader("userUuid") String userUuid) throws IOException {
-//
-//        String profileImageUrl = s3UploadService.saveFile(file);
-//
-//        ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, profileImageUrl, userUuid);
-//        String profileUuid = profileService.createProfile(profileDto);
-//        return new ResponseEntity<>(ProfileCommentResponse.getInstanceForCreate(profileUuid), HttpStatus.CREATED);
-//    }
+    /** 마이프로필 수정 **/
+    @PutMapping("/api/myprofile")
+    public ResponseEntity<ProfileCommentResponse> editMyProfile(@RequestPart("data") ProfileEditRequest profileEditRequest,
+                                                                  @RequestPart("file") MultipartFile file,
+                                                                  @RequestHeader("userUuid") String userUuid) throws IOException {
+
+        if (!file.isEmpty()) {
+            String profileImageUrl = s3UploadService.saveFile(file);
+            profileService.updateProfile(profileEditRequest, userUuid, profileImageUrl);
+            return new ResponseEntity<>(ProfileCommentResponse.getInstanceForEdit(userUuid), HttpStatus.CREATED);
+        } else {
+            profileService.updateProfileWithoutImageUrl(profileEditRequest, userUuid);
+            return new ResponseEntity<>(ProfileCommentResponse.getInstanceForEdit(userUuid), HttpStatus.CREATED);
+        }
+    }
 
     /** 마이프로필 삭제 **/
     @DeleteMapping("/api/myprofile")

@@ -16,4 +16,11 @@ public class ProfileCommentResponse {
                 .message("Profile is created.")
                 .build();
     }
+
+    public static ProfileCommentResponse getInstanceForEdit(String userUuid) {
+        return ProfileCommentResponse.builder()
+                .userUuid(userUuid)
+                .message("Profile is updated.")
+                .build();
+    }
 }

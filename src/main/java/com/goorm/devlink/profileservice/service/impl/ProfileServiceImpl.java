@@ -6,6 +6,7 @@ import com.goorm.devlink.profileservice.entity.ProfileType;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
+import com.goorm.devlink.profileservice.vo.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -75,6 +76,38 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public void updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl) {
+        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+
+        profileEntity.setProfileImageUrl(profileImageUrl);
+        profileEntity.setName(profileEditRequest.getName());
+        profileEntity.setNickname(profileEditRequest.getNickname());
+        profileEntity.setIntroduction(profileEditRequest.getIntroduction());
+        profileEntity.setCareer(profileEditRequest.getCareer());
+        profileEntity.setProfileType(profileEditRequest.getProfileType());
+        profileEntity.setAddress(profileEditRequest.getAddress());
+        profileEntity.setStacks(profileEditRequest.getStacks());
+
+        profileRepository.save(profileEntity);
+    }
+
+    @Override
+    public void updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid) {
+        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+
+        profileEntity.setProfileImageUrl(profileEntity.getProfileImageUrl());
+        profileEntity.setName(profileEditRequest.getName());
+        profileEntity.setNickname(profileEditRequest.getNickname());
+        profileEntity.setIntroduction(profileEditRequest.getIntroduction());
+        profileEntity.setCareer(profileEditRequest.getCareer());
+        profileEntity.setProfileType(profileEditRequest.getProfileType());
+        profileEntity.setAddress(profileEditRequest.getAddress());
+        profileEntity.setStacks(profileEditRequest.getStacks());
+
+        profileRepository.save(profileEntity);
+    }
+
+    @Override
     public ProfileDto getMyProfile(String userUuid, ProfileType profileType) {
         ProfileEntity profileEntity = profileRepository.findByUserUuidAndProfileType(userUuid, profileType);
         ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
@@ -88,19 +121,19 @@ public class ProfileServiceImpl implements ProfileService {
         return profileDto;
     }
 
-    @Override
-    public List<ProfileDto> getProfileListByTypeAndKeyword(ProfileType profileType, String keyword) {
-        List<ProfileEntity> profileEntityList = profileRepository.findProfileListByStackKeyword(profileType, keyword);
-        List<ProfileDto> profileDtoList = modelMapperUtil.convertToProfileDtoList(profileEntityList);
-        return profileDtoList;
-    }
-
-    @Override
-    public Slice<ProfileDto> getSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
-        Slice<ProfileEntity> profileEntitySlice = profileRepository.findSliceByStackKeyword(profileType, keyword, PageRequest.of(pageNumber, 8));
-        Slice<ProfileDto> profileDtoSlice = modelMapperUtil.mapToProfileDtoSlice(profileEntitySlice);
-        return profileDtoSlice;
-    }
+//    @Override
+//    public List<ProfileDto> getProfileListByTypeAndKeyword(ProfileType profileType, String keyword) {
+//        List<ProfileEntity> profileEntityList = profileRepository.findProfileListByStackKeyword(profileType, keyword);
+//        List<ProfileDto> profileDtoList = modelMapperUtil.convertToProfileDtoList(profileEntityList);
+//        return profileDtoList;
+//    }
+//
+//    @Override
+//    public Slice<ProfileDto> getSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
+//        Slice<ProfileEntity> profileEntitySlice = profileRepository.findSliceByStackKeyword(profileType, keyword, PageRequest.of(pageNumber, 8));
+//        Slice<ProfileDto> profileDtoSlice = modelMapperUtil.mapToProfileDtoSlice(profileEntitySlice);
+//        return profileDtoSlice;
+//    }
 
     @Override
     public Slice<ProfileSimpleCardResponse> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
@@ -113,10 +146,4 @@ public class ProfileServiceImpl implements ProfileService {
     public void deleteProfileByUserUuid(String userUuid) {
         profileRepository.deleteProfileByUserUuid(userUuid);
     }
-
-//    @Override
-//    public ProfileDto getProfileByProfileAndUserUuid(String profileUuid, String userUuid) {
-//        ProfileDto byUuid = profileRepository.findByProfileAndUserUuid(profileUuid, userUuid);
-//        return byUuid;
-//    }
 }
