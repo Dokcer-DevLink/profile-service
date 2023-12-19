@@ -71,7 +71,7 @@ public class ProfileEntity {
         profileEntity.setNickname("nickname" + i);
         profileEntity.setIntroduction("introduction" + i);
         profileEntity.setCareer(i%5);
-        profileEntity.setProfileType(i%2==0?ProfileType.MENTOR:ProfileType.MENTEE);
+        profileEntity.setProfileType(i%3==0?ProfileType.MENTOR:(i%3==1?ProfileType.MENTEE:ProfileType.BOTH));
         profileEntity.setAddress("address"+i);
         profileEntity.stacks = stacks;
 

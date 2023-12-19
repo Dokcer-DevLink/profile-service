@@ -52,8 +52,19 @@ public class ProfileServiceImpl implements ProfileService {
             stacks.add(stackTemplateList.get(i%18));
             stacks.add(stackTemplateList.get(i%18+1));
             stacks.add(stackTemplateList.get(i%18+2));
-            ProfileEntity testEntity = ProfileEntity.getInstanceTest(i, (i%2==0 ? ProfileType.MENTOR:ProfileType.MENTEE), "useruuid"+i, stacks);
-            profileRepository.save(testEntity);
+            if (i % 3 == 0) {
+                ProfileEntity testEntity = ProfileEntity.getInstanceTest(i, ProfileType.MENTOR, "useruuid" + i, stacks);
+                profileRepository.save(testEntity);
+            } else if (i % 3 == 1) {
+                ProfileEntity testEntity = ProfileEntity.getInstanceTest(i, ProfileType.MENTEE, "useruuid" + i, stacks);
+                profileRepository.save(testEntity);
+            } else if (i % 3 == 2) {
+                ProfileEntity testEntity = ProfileEntity.getInstanceTest(i, ProfileType.BOTH, "useruuid" + i, stacks);
+                profileRepository.save(testEntity);
+            } else {
+                ProfileEntity testEntity = ProfileEntity.getInstanceTest(i, ProfileType.NULL, "useruuid" + i, stacks);
+                profileRepository.save(testEntity);
+            }
         }
     }
 

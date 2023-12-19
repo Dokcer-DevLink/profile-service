@@ -1,5 +1,5 @@
 package com.goorm.devlink.profileservice.entity;
 
 public enum ProfileType {
-    MENTOR, MENTEE
+    MENTOR, MENTEE, BOTH, NULL
 }
