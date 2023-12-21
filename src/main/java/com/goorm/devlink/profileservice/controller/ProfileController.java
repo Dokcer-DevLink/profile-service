@@ -32,8 +32,8 @@ public class ProfileController {
 
     /** 마이프로필 조회 **/
     @GetMapping("/api/myprofile")
-    public ProfileDto viewMyProfilePage(@RequestHeader("userUuid") String userUuid, @RequestParam("profileType") ProfileType profileType) {
-        ProfileDto profileDto = profileService.getMyProfile(userUuid, profileType);
+    public ProfileDto viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
+        ProfileDto profileDto = profileService.getMyProfile(userUuid);
         return profileDto;
     }
 
@@ -75,7 +75,7 @@ public class ProfileController {
 
     /** 프로필(타유저) 조회 **/
     @GetMapping("/api/profile")
-    public ProfileDto viewProfilePage(@RequestHeader("userUuid") String userUuid) {
+    public ProfileDto viewProfilePage(@RequestParam("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getProfileByUserUuid(userUuid);
         return profileDto;
     }
@@ -100,7 +100,7 @@ public class ProfileController {
 
     /** 유저 스택 리스트 조회 **/
     @GetMapping("/api/profile/stacks")
-    public List<String> viewUserStackList(@RequestHeader("userUuid") String userUuid) {
+    public List<String> viewUserStackList(@RequestParam("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getProfileByUserUuid(userUuid);
         List<String> stacks = profileDto.getStacks();
         return stacks;
@@ -108,7 +108,7 @@ public class ProfileController {
 
     /** 간단한 유저 정보(프로필이미지 URL, 닉네임) 조회 **/
     @GetMapping("/api/profile/simpleInfo")
-    public ProfileSimpleResponse viewUserSimpleInfo(@RequestHeader("userUuid") String userUuid) {
+    public ProfileSimpleResponse viewUserSimpleInfo(@RequestParam("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getProfileByUserUuid(userUuid);
         ProfileSimpleResponse profileSimpleResponse = new ProfileSimpleResponse(userUuid, profileDto.getProfileImageUrl(), profileDto.getNickname());
         return profileSimpleResponse;

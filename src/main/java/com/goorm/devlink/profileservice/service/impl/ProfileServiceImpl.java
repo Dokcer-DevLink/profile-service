@@ -108,8 +108,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileDto getMyProfile(String userUuid, ProfileType profileType) {
-        ProfileEntity profileEntity = profileRepository.findByUserUuidAndProfileType(userUuid, profileType);
+    public ProfileDto getMyProfile(String userUuid) {
+        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
         ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
         return profileDto;
     }

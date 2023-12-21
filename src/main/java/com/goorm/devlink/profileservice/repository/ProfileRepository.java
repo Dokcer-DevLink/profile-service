@@ -16,7 +16,7 @@ import java.util.List;
 public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>, ProfileRepositoryCustom {
 
     // 마이프로필 조회 : RequestHeader(userUuid), RequestParamter(profileType)
-    ProfileEntity findByUserUuidAndProfileType(@Param("userUuid") String userUuid, @Param("profileType") ProfileType profileType);
+//    ProfileEntity findByUserUuidAndProfileType(@Param("userUuid") String userUuid, @Param("profileType") ProfileType profileType);
 
     ProfileEntity findByUserUuid(@Param("userUuid") String userUuid);
 

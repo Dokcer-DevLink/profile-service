@@ -19,7 +19,7 @@ public interface ProfileService {
 
     void updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid);
 
-    ProfileDto getMyProfile(String userUuid, ProfileType profileType);
+    ProfileDto getMyProfile(String userUuid);
 
     ProfileDto getProfileByUserUuid(String userUuid);
 

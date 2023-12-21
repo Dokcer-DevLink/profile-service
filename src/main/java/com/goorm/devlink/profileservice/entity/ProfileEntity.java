@@ -34,6 +34,9 @@ public class ProfileEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "stack", joinColumns = @JoinColumn(name = "profile_id"))
     private List<String> stacks;
+
+    @OneToMany(mappedBy = "profileEntity")
+    private List<ScheduleEntity> scheduleEntities = new ArrayList<>();
 //    @Column(name = "created_at")
 //    private LocalDateTime createdAt;
 //    @Column(name = "modified_at")
