@@ -15,12 +15,9 @@ public class ScheduleEntity {
     @Column(name = "schedule_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_uuid")
-//    @OneToMany(mappedBy = "team")
-//    @Column(name = "user_uuid")
-//    private String userUuid;
-    private ProfileEntity profileEntity;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "calendar_id")
+    private CalendarEntity calendarEntity;
 
 //    @OneToOne
 //    @JoinColumn(name = "mentoring_id")
@@ -29,14 +26,5 @@ public class ScheduleEntity {
     private String mentoringUuid;
     @Column(name = "start_time")
     private LocalDateTime startTime;
-    @Column(name = "end_time")
-    private LocalDateTime endTime;
-
-//    @OneToOne
-//    @JoinColumn(name = "post_id")
-//    private PostEntity postEntity;
-    @Column(name = "post_uuid")
-    private String postUuid;
-    @Column(name = "running_time")
-    private int runningTime;
+    private int unitTimeCount;
 }

@@ -1,7 +1,9 @@
 package com.goorm.devlink.profileservice.controller;
 
 import com.goorm.devlink.profileservice.dto.ProfileDto;
+import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.ProfileType;
+import com.goorm.devlink.profileservice.feign.MentoringServiceFeignClient;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.vo.*;
@@ -20,20 +22,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private ProfileService profileService;
-    private S3UploadService s3UploadService;
+    private final ProfileService profileService;
+    private final S3UploadService s3UploadService;
+    private final MentoringServiceFeignClient mentoringServiceFeignClient;
 
-    @Autowired
-    public ProfileController(ProfileService profileService, S3UploadService s3UploadService) {
-        this.profileService = profileService;
-        this.s3UploadService = s3UploadService;
-        profileService.testMethod();
-    }
+//    @Autowired
+//    public ProfileController(ProfileService profileService, S3UploadService s3UploadService) {
+//        this.profileService = profileService;
+//        this.s3UploadService = s3UploadService;
+//        profileService.testMethod();
+//    }
 
     /** 마이프로필 조회 **/
     @GetMapping("/api/myprofile")
     public ProfileDto viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getMyProfile(userUuid);
+//        ScheduleDto scheduleDto = mentoringServiceFeignClient.viewUserSchedulesTmp(userUuid); // 서비스 간 통신
         return profileDto;
     }
 
