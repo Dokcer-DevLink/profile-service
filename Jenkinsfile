@@ -24,6 +24,7 @@ pipeline {
         stage('Spring APP Build') {
             steps {
                 // sh './gradlew clean build --warning-mode all'
+                sh 'chmod +x gradlew'
                 sh './gradlew bootJar'
 
                 // Build your Java application (e.g., using Maven or Gradle)
