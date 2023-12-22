@@ -43,13 +43,10 @@ public class ProfileController {
 
     /** 마이프로필 생성 **/
     @PostMapping("/api/myprofile")
-    public ResponseEntity<ProfileDto> createMyProfile(@RequestPart("data") ProfileCreateRequest profileCreateRequest,
-//                                                                  @RequestPart("file") MultipartFile file,
-                                                                  @RequestHeader("userUuid") String userUuid) throws IOException {
+    public ResponseEntity<ProfileDto> createMyProfile(@RequestHeader("userUuid") String userUuid,
+                                                      @RequestBody ProfileCreateRequest profileCreateRequest) throws IOException {
 
-//        String profileImageUrl = s3UploadService.saveFile(file);
-
-        ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, "default-profileImageUrl", userUuid);
+        ProfileDto profileDto = ProfileDto.getInstanceForCreate(userUuid, profileCreateRequest);
         profileService.createProfile(profileDto);
         return new ResponseEntity<>(profileDto, HttpStatus.CREATED);
     }

@@ -2,12 +2,9 @@ package com.goorm.devlink.profileservice.dto;
 
 import com.goorm.devlink.profileservice.entity.ProfileType;
 import com.goorm.devlink.profileservice.vo.ProfileCreateRequest;
-import com.goorm.devlink.profileservice.vo.ProfileEditRequest;
 import lombok.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Getter
@@ -36,17 +33,10 @@ public class ProfileDto {
         this.stacks = stacks;
     }
 
-    public static ProfileDto getInstanceForCreate(ProfileCreateRequest profileCreateRequest, String profileImageUrl, String userUuid) {
+    public static ProfileDto getInstanceForCreate(String userUuid, ProfileCreateRequest profileCreateRequest) {
         return ProfileDto.builder()
                 .userUuid(userUuid)
-                .profileImageUrl(profileImageUrl)
-                .name(UUID.randomUUID().toString())
-                .nickname(UUID.randomUUID().toString())
-                .profileType(ProfileType.NULL)
-                .introduction("자기소개를 입력해주세요.")
-                .career(0)
-                .stacks(null)
-                .address("지역을 입력해주세요.")
+                .nickname(profileCreateRequest.getNickname())
                 .build();
     }
 }
