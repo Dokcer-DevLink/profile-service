@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final ModelMapperUtil modelMapperUtil;
 
+    @Transactional
     @Override
     public void testMethod() {
 
@@ -69,12 +71,14 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+    @Transactional
     @Override
     public void createProfile(ProfileDto profileDto) {
         ProfileEntity profileEntity = modelMapperUtil.convertToProfileEntity(profileDto);
         profileRepository.save(profileEntity);
     }
 
+    @Transactional
     @Override
     public void updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl) {
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
@@ -91,6 +95,7 @@ public class ProfileServiceImpl implements ProfileService {
         profileRepository.save(profileEntity);
     }
 
+    @Transactional
     @Override
     public void updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid) {
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
@@ -107,6 +112,7 @@ public class ProfileServiceImpl implements ProfileService {
         profileRepository.save(profileEntity);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProfileDto getMyProfile(String userUuid) {
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
@@ -114,6 +120,7 @@ public class ProfileServiceImpl implements ProfileService {
         return profileDto;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProfileDto getProfileByUserUuid(String userUuid) {
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
@@ -135,6 +142,7 @@ public class ProfileServiceImpl implements ProfileService {
 //        return profileDtoSlice;
 //    }
 
+    @Transactional(readOnly = true)
     @Override
     public Slice<ProfileSimpleCardResponse> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
         Slice<ProfileEntity> profileEntitySlice = profileRepository.findSliceByStackKeyword(profileType, keyword, PageRequest.of(pageNumber, 8));
@@ -142,6 +150,7 @@ public class ProfileServiceImpl implements ProfileService {
         return profileSimpleCardResponseSlice;
     }
 
+    @Transactional
     @Override
     public void deleteProfileByUserUuid(String userUuid) {
         profileRepository.deleteProfileByUserUuid(userUuid);

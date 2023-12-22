@@ -19,9 +19,6 @@ public class ScheduleEntity {
     @JoinColumn(name = "calendar_id")
     private CalendarEntity calendarEntity;
 
-//    @OneToOne
-//    @JoinColumn(name = "mentoring_id")
-//    private MentoringEntity mentoringEntity;
     @Column(name = "mentoring_uuid")
     private String mentoringUuid;
     @Column(name = "start_time")

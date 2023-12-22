@@ -35,53 +35,53 @@ public class ProfileController {
 
     /** 마이프로필 조회 **/
     @GetMapping("/api/myprofile")
-    public ProfileDto viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
+    public ResponseEntity<ProfileDto> viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getMyProfile(userUuid);
 //        ScheduleDto scheduleDto = mentoringServiceFeignClient.viewUserSchedulesTmp(userUuid); // 서비스 간 통신
-        return profileDto;
+        return ResponseEntity.ok(profileDto);
     }
 
     /** 마이프로필 생성 **/
     @PostMapping("/api/myprofile")
-    public ResponseEntity<ProfileCommentResponse> createMyProfile(@RequestPart("data") ProfileCreateRequest profileCreateRequest,
-                                                                  @RequestPart("file") MultipartFile file,
+    public ResponseEntity<ProfileDto> createMyProfile(@RequestPart("data") ProfileCreateRequest profileCreateRequest,
+//                                                                  @RequestPart("file") MultipartFile file,
                                                                   @RequestHeader("userUuid") String userUuid) throws IOException {
 
 //        String profileImageUrl = s3UploadService.saveFile(file);
 
         ProfileDto profileDto = ProfileDto.getInstanceForCreate(profileCreateRequest, "default-profileImageUrl", userUuid);
         profileService.createProfile(profileDto);
-        return new ResponseEntity<>(ProfileCommentResponse.getInstanceForCreate(userUuid), HttpStatus.CREATED);
+        return new ResponseEntity<>(profileDto, HttpStatus.CREATED);
     }
 
     /** 마이프로필 수정 **/
     @PutMapping("/api/myprofile")
-    public ResponseEntity<ProfileCommentResponse> editMyProfile(@RequestPart("data") ProfileEditRequest profileEditRequest,
-                                                                  @RequestPart("file") MultipartFile file,
-                                                                  @RequestHeader("userUuid") String userUuid) throws IOException {
+    public ResponseEntity editMyProfile(@RequestPart("data") ProfileEditRequest profileEditRequest,
+                                        @RequestPart("file") MultipartFile file,
+                                        @RequestHeader("userUuid") String userUuid) throws IOException {
 
         if (!file.isEmpty()) {
             String profileImageUrl = s3UploadService.saveFile(file);
             profileService.updateProfile(profileEditRequest, userUuid, profileImageUrl);
-            return new ResponseEntity<>(ProfileCommentResponse.getInstanceForEdit(userUuid), HttpStatus.CREATED);
+            return ResponseEntity.accepted().build();
         } else {
             profileService.updateProfileWithoutImageUrl(profileEditRequest, userUuid);
-            return new ResponseEntity<>(ProfileCommentResponse.getInstanceForEdit(userUuid), HttpStatus.CREATED);
+            return ResponseEntity.accepted().build();
         }
     }
 
     /** 마이프로필 삭제 **/
     @DeleteMapping("/api/myprofile")
-    public String deleteMyProfile(@RequestHeader("userUuid") String userUuid) {
+    public ResponseEntity deleteMyProfile(@RequestHeader("userUuid") String userUuid) {
         profileService.deleteProfileByUserUuid(userUuid);
-        return "Delete success.";
+        return ResponseEntity.ok().build();
     }
 
     /** 프로필(타유저) 조회 **/
     @GetMapping("/api/profile")
-    public ProfileDto viewProfilePage(@RequestParam("userUuid") String userUuid) {
+    public ResponseEntity<ProfileDto> viewProfilePage(@RequestParam("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getProfileByUserUuid(userUuid);
-        return profileDto;
+        return new ResponseEntity<>(profileDto, HttpStatus.ACCEPTED);
     }
 
     /** 프로필 리스트(검색) 조회 **/
@@ -104,17 +104,23 @@ public class ProfileController {
 
     /** 유저 스택 리스트 조회 **/
     @GetMapping("/api/profile/stacks")
-    public List<String> viewUserStackList(@RequestParam("userUuid") String userUuid) {
+    public ResponseEntity<List<String>> viewUserStackList(@RequestParam("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getProfileByUserUuid(userUuid);
         List<String> stacks = profileDto.getStacks();
-        return stacks;
+        return new ResponseEntity<>(stacks, HttpStatus.OK);
     }
 
     /** 간단한 유저 정보(프로필이미지 URL, 닉네임) 조회 **/
     @GetMapping("/api/profile/simpleInfo")
-    public ProfileSimpleResponse viewUserSimpleInfo(@RequestParam("userUuid") String userUuid) {
+    public ResponseEntity<ProfileSimpleResponse> viewUserSimpleInfo(@RequestParam("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getProfileByUserUuid(userUuid);
         ProfileSimpleResponse profileSimpleResponse = new ProfileSimpleResponse(userUuid, profileDto.getProfileImageUrl(), profileDto.getNickname());
-        return profileSimpleResponse;
+        return new ResponseEntity<>(profileSimpleResponse, HttpStatus.OK);
     }
+
+    /** 유저의 스케줄 정보 보내기 (멘토링 서비스와의 통신) **/
+//    @GetMapping("/api/profile/schedule")
+//    public ScheduleDto viewUserSchedules(@RequestParam("userUuid") String userUuid) {
+//        profileService.
+//    }
 }
