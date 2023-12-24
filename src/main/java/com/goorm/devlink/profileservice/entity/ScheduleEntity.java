@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name = "Schedule")
 public class ScheduleEntity {
 

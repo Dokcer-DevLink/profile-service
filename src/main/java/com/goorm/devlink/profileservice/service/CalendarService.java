@@ -1,12 +1,11 @@
 package com.goorm.devlink.profileservice.service;
 
-import com.goorm.devlink.profileservice.repository.CalendarRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.goorm.devlink.profileservice.dto.CalendarDto;
+import com.goorm.devlink.profileservice.vo.ScheduleCreateRequest;
 
-@Service
-@RequiredArgsConstructor
-public class CalendarService {
+public interface CalendarService {
 
-    private final CalendarRepository calendarRepository;
+//    CalendarDto getUserCalendar(String userUuid);
+
+    void saveCalendarByScheduleCreateRequest(String userUuid, ScheduleCreateRequest scheduleCreateRequest);
 }
