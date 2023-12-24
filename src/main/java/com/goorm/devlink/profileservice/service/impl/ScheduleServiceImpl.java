@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,7 +31,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<ScheduleEntity> getScheduleEntitiesByCalenderEntity(CalendarEntity calendarEntity) {
-        return scheduleRepository.findByCalendarEntity(calendarEntity);
+        return scheduleRepository.findByCalendarEntityAndStartTimeIsAfterThanCurrentTime(calendarEntity, LocalDateTime.now());
     }
 
     @Transactional
