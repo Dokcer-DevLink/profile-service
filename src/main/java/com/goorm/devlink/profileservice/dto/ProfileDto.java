@@ -19,7 +19,7 @@ public class ProfileDto {
     private String nickname;
     private ProfileType profileType;
     private String introduction;
-    private int career; // is it years?
+    private int career;
     private String address;
     private List<String> stacks;
 

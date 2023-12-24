@@ -1,13 +1,11 @@
 package com.goorm.devlink.profileservice.service.impl;
 
-import com.goorm.devlink.profileservice.dto.CalendarDto;
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ScheduleEntity;
 import com.goorm.devlink.profileservice.repository.CalendarRepository;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
-import com.goorm.devlink.profileservice.repository.ScheduleRepository;
 import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.service.ScheduleService;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
@@ -26,14 +24,6 @@ public class CalendarServiceImpl implements CalendarService {
     private final CalendarRepository calendarRepository;
     private final ScheduleService scheduleService;
     private final ModelMapperUtil modelMapperUtil;
-
-//    @Override
-//    public CalendarDto getUserCalendar(String userUuid) {
-//        CalendarEntity calendarEntity = calendarRepository.findByUserUuid(userUuid);
-//        CalendarDto calendarDto = modelMapperUtil.convertToCalendarDto(calendarEntity);
-//        return calendarDto;
-//    }
-
 
     @Override
     public List<ScheduleDto> getCalendarScheduleDtos(String userUuid) {

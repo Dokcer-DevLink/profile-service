@@ -9,8 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CalendarRepository extends JpaRepository<CalendarEntity, Long> {
 
-//    CalendarEntity findByUserUuid(String userUuid);
-
-
     CalendarEntity findByProfileEntity(ProfileEntity profileEntity);
 }

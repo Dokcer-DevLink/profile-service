@@ -128,20 +128,6 @@ public class ProfileServiceImpl implements ProfileService {
         return profileDto;
     }
 
-//    @Override
-//    public List<ProfileDto> getProfileListByTypeAndKeyword(ProfileType profileType, String keyword) {
-//        List<ProfileEntity> profileEntityList = profileRepository.findProfileListByStackKeyword(profileType, keyword);
-//        List<ProfileDto> profileDtoList = modelMapperUtil.convertToProfileDtoList(profileEntityList);
-//        return profileDtoList;
-//    }
-//
-//    @Override
-//    public Slice<ProfileDto> getSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
-//        Slice<ProfileEntity> profileEntitySlice = profileRepository.findSliceByStackKeyword(profileType, keyword, PageRequest.of(pageNumber, 8));
-//        Slice<ProfileDto> profileDtoSlice = modelMapperUtil.mapToProfileDtoSlice(profileEntitySlice);
-//        return profileDtoSlice;
-//    }
-
     @Transactional(readOnly = true)
     @Override
     public Slice<ProfileSimpleCardResponse> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
