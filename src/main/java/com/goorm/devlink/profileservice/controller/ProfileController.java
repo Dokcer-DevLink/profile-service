@@ -4,11 +4,11 @@ import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.ProfileType;
 import com.goorm.devlink.profileservice.feign.MentoringServiceFeignClient;
+import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.vo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +24,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
     private final S3UploadService s3UploadService;
+    private final CalendarService calendarService;
     private final MentoringServiceFeignClient mentoringServiceFeignClient;
 
 //    @Autowired
@@ -35,10 +36,12 @@ public class ProfileController {
 
     /** 마이프로필 조회 **/
     @GetMapping("/api/myprofile")
-    public ResponseEntity<ProfileDto> viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
+    public ResponseEntity<MyProfileViewReponse> viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getMyProfile(userUuid);
 //        ScheduleDto scheduleDto = mentoringServiceFeignClient.viewUserSchedulesTmp(userUuid); // 서비스 간 통신
-        return ResponseEntity.ok(profileDto);
+        List<ScheduleDto> scheduleDtos = calendarService.getCalendarScheduleDtos(userUuid);
+        MyProfileViewReponse myProfileViewResponse = MyProfileViewReponse.getInstanceForResponse(profileDto, scheduleDtos);
+        return new ResponseEntity<>(myProfileViewResponse, HttpStatus.OK);
     }
 
     /** 마이프로필 생성 **/
