@@ -61,5 +61,10 @@ public class CalendarServiceImpl implements CalendarService {
         }
     }
 
+    @Transactional
+    @Override
+    public void deleteScheduleByMentoringUuid(String mentoringUuid) {
 
+        scheduleService.deleteScheduleByMentoringUuid(mentoringUuid);
+    }
 }

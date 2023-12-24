@@ -42,4 +42,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleEntity.setCalendarEntity(calendarEntity);
         scheduleRepository.save(scheduleEntity);
     }
+
+    @Transactional
+    @Override
+    public void deleteScheduleByMentoringUuid(String mentoringUuid) {
+
+        scheduleRepository.deleteByMentoringUuid(mentoringUuid);
+    }
 }

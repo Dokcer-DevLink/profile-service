@@ -13,4 +13,6 @@ public interface CalendarService {
     List<ScheduleDto> getCalendarScheduleDtos(String userUuid);
 
     void saveCalendarByScheduleCreateRequest(String userUuid, ScheduleCreateRequest scheduleCreateRequest);
+
+    void deleteScheduleByMentoringUuid(String mentoringUuid);
 }

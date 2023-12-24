@@ -34,4 +34,10 @@ public class CalendarController {
         calendarService.saveCalendarByScheduleCreateRequest(userUuid, scheduleCreateRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/api/profile/schedule")
+    public ResponseEntity deleteUserCalendarSchedule(@RequestParam("mentoringUuid") String mentoringUuid) {
+        calendarService.deleteScheduleByMentoringUuid(mentoringUuid);
+        return ResponseEntity.accepted().build();
+    }
 }
