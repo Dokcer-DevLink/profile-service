@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
@@ -24,6 +26,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleEntity scheduleEntity = new ScheduleEntity();
         scheduleEntity.setCalendarEntity(calendarEntity);
         scheduleRepository.save(scheduleEntity);
+    }
+
+    @Override
+    public List<ScheduleEntity> getScheduleEntitiesByCalenderEntity(CalendarEntity calendarEntity) {
+        return scheduleRepository.findByCalendarEntity(calendarEntity);
     }
 
     @Transactional

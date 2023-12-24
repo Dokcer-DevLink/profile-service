@@ -1,8 +1,10 @@
 package com.goorm.devlink.profileservice.service.impl;
 
 import com.goorm.devlink.profileservice.dto.CalendarDto;
+import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
+import com.goorm.devlink.profileservice.entity.ScheduleEntity;
 import com.goorm.devlink.profileservice.repository.CalendarRepository;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import com.goorm.devlink.profileservice.repository.ScheduleRepository;
@@ -13,6 +15,8 @@ import com.goorm.devlink.profileservice.vo.ScheduleCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,17 @@ public class CalendarServiceImpl implements CalendarService {
 //        CalendarDto calendarDto = modelMapperUtil.convertToCalendarDto(calendarEntity);
 //        return calendarDto;
 //    }
+
+
+    @Override
+    public List<ScheduleDto> getCalendarScheduleDtos(String userUuid) {
+
+        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+        CalendarEntity calendarEntity = calendarRepository.findByProfileEntity(profileEntity);
+        List<ScheduleEntity> scheduleEntities = scheduleService.getScheduleEntitiesByCalenderEntity(calendarEntity);
+        List<ScheduleDto> scheduleDtos = modelMapperUtil.mapToScheduleDtoList(scheduleEntities);
+        return scheduleDtos;
+    }
 
     @Transactional
     @Override

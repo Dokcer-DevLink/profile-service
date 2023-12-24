@@ -89,4 +89,12 @@ public class ModelMapperUtil {
         ScheduleEntity scheduleEntity = mapper.map(scheduleDto, ScheduleEntity.class);
         return scheduleEntity;
     }
+
+    public List<ScheduleDto> mapToScheduleDtoList(List<ScheduleEntity> scheduleEntityList) {
+        List<ScheduleDto> retScheduleDtoList = new ArrayList<>();
+        for (ScheduleEntity scheduleEntity : scheduleEntityList) {
+            retScheduleDtoList.add(convertToScheduleDto(scheduleEntity));
+        }
+        return retScheduleDtoList;
+    }
 }
