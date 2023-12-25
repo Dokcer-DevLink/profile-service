@@ -46,8 +46,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Transactional
     @Override
-    public void deleteScheduleByMentoringUuid(String mentoringUuid) {
+    public void deleteScheduleByCalendarEntityAndMentoringUuid(CalendarEntity calendarEntity, String mentoringUuid) {
 
-        scheduleRepository.deleteByMentoringUuid(mentoringUuid);
+        scheduleRepository.deleteByCalendarEntityAndMentoringUuid(calendarEntity, mentoringUuid);
     }
 }

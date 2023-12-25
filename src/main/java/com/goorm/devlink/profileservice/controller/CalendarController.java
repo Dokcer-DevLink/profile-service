@@ -1,7 +1,9 @@
 package com.goorm.devlink.profileservice.controller;
 
+import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.service.CalendarService;
+import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.vo.CalendarViewResponse;
 import com.goorm.devlink.profileservice.vo.ScheduleCreateRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +28,16 @@ public class CalendarController {
     }
 
     /** 스케줄 생성 **/
-    @PostMapping("/api/profile/schedule")
+    @PostMapping("/api/myprofile/schedule")
     public ResponseEntity setUserCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestBody ScheduleCreateRequest scheduleCreateRequest) {
         calendarService.saveCalendarByScheduleCreateRequest(userUuid, scheduleCreateRequest);
         return ResponseEntity.ok().build();
     }
 
     /** 스케줄 취소 **/
-    @DeleteMapping("/api/profile/schedule")
-    public ResponseEntity deleteUserCalendarSchedule(@RequestParam("mentoringUuid") String mentoringUuid) {
-        calendarService.deleteScheduleByMentoringUuid(mentoringUuid);
+    @DeleteMapping("/api/myprofile/schedule")
+    public ResponseEntity deleteUserCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestParam("mentoringUuid") String mentoringUuid) {
+        calendarService.deleteScheduleByUserUuidAndMentoringUuid(userUuid, mentoringUuid);
         return ResponseEntity.accepted().build();
     }
 }

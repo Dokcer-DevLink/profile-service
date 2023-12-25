@@ -53,8 +53,9 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Transactional
     @Override
-    public void deleteScheduleByMentoringUuid(String mentoringUuid) {
-
-        scheduleService.deleteScheduleByMentoringUuid(mentoringUuid);
+    public void deleteScheduleByUserUuidAndMentoringUuid(String userUuid, String mentoringUuid) {
+        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+        CalendarEntity calendarEntity = calendarRepository.findByProfileEntity(profileEntity);
+        scheduleService.deleteScheduleByCalendarEntityAndMentoringUuid(calendarEntity, mentoringUuid);
     }
 }

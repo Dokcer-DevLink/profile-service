@@ -20,6 +20,8 @@ public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> 
             @Param("currentTime") LocalDateTime currentTime);
 
     @Modifying
-    @Query("DELETE FROM ScheduleEntity s where s.mentoringUuid = :mentoringUuid")
-    void deleteByMentoringUuid(@Param("mentoringUuid") String mentoringUuid);
+    @Query("DELETE FROM ScheduleEntity s where s.calendarEntity = :calendarEntity AND s.mentoringUuid = :mentoringUuid")
+    void deleteByCalendarEntityAndMentoringUuid(
+            @Param("calendarEntity") CalendarEntity calendarEntity,
+            @Param("mentoringUuid") String mentoringUuid);
 }

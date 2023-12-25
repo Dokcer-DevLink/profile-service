@@ -11,5 +11,5 @@ public interface CalendarService {
 
     void saveCalendarByScheduleCreateRequest(String userUuid, ScheduleCreateRequest scheduleCreateRequest);
 
-    void deleteScheduleByMentoringUuid(String mentoringUuid);
+    void deleteScheduleByUserUuidAndMentoringUuid(String userUuid, String mentoringUuid);
 }
