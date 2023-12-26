@@ -46,12 +46,12 @@ public class ProfileController {
 
     /** 마이프로필 생성 **/
     @PostMapping("/api/myprofile")
-    public ResponseEntity<ProfileDto> createMyProfile(@RequestHeader("userUuid") String userUuid,
-                                                      @RequestBody ProfileCreateRequest profileCreateRequest) throws IOException {
+    public ResponseEntity createMyProfile(@RequestHeader("userUuid") String userUuid,
+                                          @RequestBody ProfileCreateRequest profileCreateRequest) throws IOException {
 
         ProfileDto profileDto = ProfileDto.getInstanceForCreate(userUuid, profileCreateRequest);
         profileService.createProfile(profileDto);
-        return new ResponseEntity<>(profileDto, HttpStatus.CREATED);
+        return ResponseEntity.ok().build();
     }
 
     /** 마이프로필 수정 **/

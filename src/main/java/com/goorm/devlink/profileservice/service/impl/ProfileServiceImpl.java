@@ -75,7 +75,11 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void createProfile(ProfileDto profileDto) {
         ProfileEntity profileEntity = modelMapperUtil.convertToProfileEntity(profileDto);
-        profileRepository.save(profileEntity);
+        try {
+            profileRepository.save(profileEntity);
+        } catch (Exception e) {
+            throw new RuntimeException("Profile creation error.");
+        }
     }
 
     @Transactional
@@ -139,6 +143,10 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     @Override
     public void deleteProfileByUserUuid(String userUuid) {
-        profileRepository.deleteProfileByUserUuid(userUuid);
+        try {
+            profileRepository.deleteProfileByUserUuid(userUuid);
+        } catch (Exception e) {
+            throw new RuntimeException("Profile delete error.");
+        }
     }
 }
