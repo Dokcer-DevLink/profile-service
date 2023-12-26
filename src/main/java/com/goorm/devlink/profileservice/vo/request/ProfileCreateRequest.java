@@ -9,4 +9,5 @@ import lombok.*;
 public class ProfileCreateRequest {
 
     private String nickname;
+    private String githubAddress;
 }

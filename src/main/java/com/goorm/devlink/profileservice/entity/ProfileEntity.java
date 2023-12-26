@@ -21,6 +21,8 @@ public class ProfileEntity {
     private String profileImageUrl;
     private String name;
     private String nickname;
+    @Column(name = "github_address")
+    private String githubAddress;
     private String introduction;
     private int career;
     private String address;
@@ -34,19 +36,4 @@ public class ProfileEntity {
 
     @OneToOne(mappedBy = "profileEntity")
     private CalendarEntity calendarEntity;
-
-    public static ProfileEntity getInstanceTest(int i, ProfileType profileType, String userUuid, List<String> stacks){
-        ProfileEntity profileEntity = new ProfileEntity();
-        profileEntity.setUserUuid(userUuid);
-        profileEntity.setProfileImageUrl("profile_image_url" + i);
-        profileEntity.setName("name" + i);
-        profileEntity.setNickname("nickname" + i);
-        profileEntity.setIntroduction("introduction" + i);
-        profileEntity.setCareer(i%5);
-        profileEntity.setProfileType(i%3==0?ProfileType.MENTOR:(i%3==1?ProfileType.MENTEE:ProfileType.BOTH));
-        profileEntity.setAddress("address"+i);
-        profileEntity.stacks = stacks;
-
-        return profileEntity;
-    }
 }

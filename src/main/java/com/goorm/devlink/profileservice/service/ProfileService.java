@@ -8,8 +8,6 @@ import org.springframework.data.domain.Slice;
 
 public interface ProfileService {
 
-    void testMethod();
-
     void createProfile(ProfileDto profileDto);
 
     void updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl);

@@ -13,6 +13,7 @@ public class ProfileEditRequest {
 
     private String name;
     private String nickname;
+    private String githubAddress;
     private ProfileType profileType;
     private String introduction;
     private int career; // is it years?
