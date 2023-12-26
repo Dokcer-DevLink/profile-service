@@ -27,14 +27,14 @@ public class CalendarController {
 
     /** 스케줄 생성 **/
     @PostMapping("/api/myprofile/schedule")
-    public ResponseEntity setUserCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestBody ScheduleCreateRequest scheduleCreateRequest) {
+    public ResponseEntity createCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestBody ScheduleCreateRequest scheduleCreateRequest) {
         calendarService.saveCalendarByScheduleCreateRequest(userUuid, scheduleCreateRequest);
         return ResponseEntity.ok().build();
     }
 
     /** 스케줄 취소 **/
     @DeleteMapping("/api/myprofile/schedule")
-    public ResponseEntity deleteUserCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestParam("mentoringUuid") String mentoringUuid) {
+    public ResponseEntity cancelCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestParam("mentoringUuid") String mentoringUuid) {
         calendarService.deleteScheduleByUserUuidAndMentoringUuid(userUuid, mentoringUuid);
         return ResponseEntity.accepted().build();
     }

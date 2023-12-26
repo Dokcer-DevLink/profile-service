@@ -36,11 +36,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Transactional
     @Override
-    public void saveScheduleByCalendarAndCreateRequest(CalendarEntity calendarEntity, ScheduleCreateRequest scheduleCreateRequest) {
+    public void saveScheduleByCalendarAndCreateRequest(CalendarEntity calendarEntity, ScheduleCreateRequest scheduleCreateRequest) throws RuntimeException {
 
         ScheduleDto scheduleDto = ScheduleDto.getInstanceForCreate(scheduleCreateRequest);
         ScheduleEntity scheduleEntity = modelMapperUtil.convertToScheduleEntity(scheduleDto);
         scheduleEntity.setCalendarEntity(calendarEntity);
+
 
         if (scheduleValidationCheck(scheduleEntity)) {
             try {
@@ -49,7 +50,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 throw new RuntimeException("Schedule creation error.");
             }
         } else {
-            throw new RuntimeException("There are Schedules already exist in overlapping time zone.");
+            throw new RuntimeException("There are schedules already exist in overlapping time zone.");
         }
     }
 
@@ -66,12 +67,17 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private boolean scheduleValidationCheck(ScheduleEntity scheduleEntity) {
 
-        List<ScheduleEntity> toValidCheckSchedules = scheduleRepository.findByCalendarEntityAndStartTimeBetween(
-                scheduleEntity.getCalendarEntity(),
-                scheduleEntity.getStartTime(),
-                scheduleEntity.getStartTime().plusMinutes(scheduleEntity.getUnitTimeCount() * 30));
+        LocalDateTime startTimeToValidCheck = scheduleEntity.getStartTime();
+        LocalDateTime endTimeToValidCheck = startTimeToValidCheck.plusMinutes(scheduleEntity.getUnitTimeCount() * 30);
 
-        if (toValidCheckSchedules.isEmpty()) return true;
-        else return false;
+        List<ScheduleEntity> allSchedules = scheduleRepository.findByCalendarEntity(scheduleEntity.getCalendarEntity());
+        for (ScheduleEntity existSchedule : allSchedules) {
+            LocalDateTime existStartTime = existSchedule.getStartTime();
+            LocalDateTime existEndTime = existStartTime.plusMinutes(existSchedule.getUnitTimeCount() * 30);
+            if ((startTimeToValidCheck.isAfter(existStartTime) && startTimeToValidCheck.isBefore(existEndTime)) ||
+                    (endTimeToValidCheck.isAfter(existStartTime) && endTimeToValidCheck.isBefore(existEndTime)))
+                return false;
+        }
+        return true;
     }
 }

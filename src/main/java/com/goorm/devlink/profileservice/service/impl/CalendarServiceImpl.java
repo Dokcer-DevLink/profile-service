@@ -44,7 +44,7 @@ public class CalendarServiceImpl implements CalendarService {
         try {
             scheduleService.saveScheduleByCalendarAndCreateRequest(calendarEntity, scheduleCreateRequest);
         } catch (Exception e) {
-            throw new RuntimeException("Schedule creation error.");
+            throw new RuntimeException("Schedule already exist in overlapping time zone or creation error.");
         }
     }
 
