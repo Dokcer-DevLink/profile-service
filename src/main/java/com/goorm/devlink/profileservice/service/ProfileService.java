@@ -1,13 +1,10 @@
 package com.goorm.devlink.profileservice.service;
 
 import com.goorm.devlink.profileservice.dto.ProfileDto;
-import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ProfileType;
-import com.goorm.devlink.profileservice.vo.ProfileEditRequest;
-import com.goorm.devlink.profileservice.vo.ProfileSimpleCardResponse;
+import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
 import org.springframework.data.domain.Slice;
-
-import java.util.List;
 
 public interface ProfileService {
 

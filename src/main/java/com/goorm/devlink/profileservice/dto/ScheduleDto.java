@@ -1,6 +1,6 @@
 package com.goorm.devlink.profileservice.dto;
 
-import com.goorm.devlink.profileservice.vo.ScheduleCreateRequest;
+import com.goorm.devlink.profileservice.vo.request.ScheduleCreateRequest;
 import lombok.*;
 
 import java.time.LocalDateTime;

@@ -6,7 +6,7 @@ import com.goorm.devlink.profileservice.entity.ScheduleEntity;
 import com.goorm.devlink.profileservice.repository.ScheduleRepository;
 import com.goorm.devlink.profileservice.service.ScheduleService;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
-import com.goorm.devlink.profileservice.vo.ScheduleCreateRequest;
+import com.goorm.devlink.profileservice.vo.request.ScheduleCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

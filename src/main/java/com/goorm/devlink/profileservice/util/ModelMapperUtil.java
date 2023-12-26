@@ -6,7 +6,7 @@ import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ScheduleEntity;
-import com.goorm.devlink.profileservice.vo.ProfileSimpleCardResponse;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

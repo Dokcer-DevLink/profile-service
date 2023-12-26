@@ -1,11 +1,9 @@
 package com.goorm.devlink.profileservice.controller;
 
-import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.service.CalendarService;
-import com.goorm.devlink.profileservice.service.ProfileService;
-import com.goorm.devlink.profileservice.vo.CalendarViewResponse;
-import com.goorm.devlink.profileservice.vo.ScheduleCreateRequest;
+import com.goorm.devlink.profileservice.vo.response.CalendarViewResponse;
+import com.goorm.devlink.profileservice.vo.request.ScheduleCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

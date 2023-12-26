@@ -1,4 +1,4 @@
-package com.goorm.devlink.profileservice.vo;
+package com.goorm.devlink.profileservice.vo.request;
 
 import lombok.Data;
 

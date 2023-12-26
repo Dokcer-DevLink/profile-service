@@ -1,4 +1,4 @@
-package com.goorm.devlink.profileservice.vo;
+package com.goorm.devlink.profileservice.vo.response;
 
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import lombok.*;

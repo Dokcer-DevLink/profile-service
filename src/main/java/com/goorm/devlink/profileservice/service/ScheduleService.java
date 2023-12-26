@@ -2,7 +2,7 @@ package com.goorm.devlink.profileservice.service;
 
 import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ScheduleEntity;
-import com.goorm.devlink.profileservice.vo.ScheduleCreateRequest;
+import com.goorm.devlink.profileservice.vo.request.ScheduleCreateRequest;
 
 import java.util.List;
 
