@@ -1,8 +1,12 @@
 package com.goorm.devlink.profileservice.util;
 
+import com.goorm.devlink.profileservice.dto.CalendarDto;
 import com.goorm.devlink.profileservice.dto.ProfileDto;
+import com.goorm.devlink.profileservice.dto.ScheduleDto;
+import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
-import com.goorm.devlink.profileservice.vo.ProfileSimpleCardResponse;
+import com.goorm.devlink.profileservice.entity.ScheduleEntity;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -32,7 +36,6 @@ public class ModelMapperUtil {
 
     public ProfileSimpleCardResponse convertToProfileSimpleCardResponse(ProfileEntity profileEntity) {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//        ProfileSimpleCardResponse profileSimpleCardResponse = mapper.map(profileEntity, ProfileSimpleCardResponse.class);
         ProfileSimpleCardResponse profileSimpleCardResponse = new ProfileSimpleCardResponse(
                 profileEntity.getUserUuid(), profileEntity.getProfileImageUrl(), profileEntity.getNickname(), profileEntity.getAddress(), profileEntity.getStacks());
         return profileSimpleCardResponse;
@@ -60,5 +63,37 @@ public class ModelMapperUtil {
                 .collect(Collectors.toList());
 
         return new SliceImpl<>(profileSimpleCardResponseList, profileEntitySlice.getPageable(), profileEntitySlice.hasNext());
+    }
+
+    public CalendarDto convertToCalendarDto(CalendarEntity calendarEntity) {
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        CalendarDto calendarDto = mapper.map(calendarEntity, CalendarDto.class);
+        return calendarDto;
+    }
+
+    public CalendarEntity convertToCalendarEntity(CalendarDto calendarDto) {
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        CalendarEntity calendarEntity = mapper.map(calendarDto, CalendarEntity.class);
+        return calendarEntity;
+    }
+
+    public ScheduleDto convertToScheduleDto(ScheduleEntity scheduleEntity) {
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ScheduleDto scheduleDto = mapper.map(scheduleEntity, ScheduleDto.class);
+        return scheduleDto;
+    }
+
+    public ScheduleEntity convertToScheduleEntity(ScheduleDto scheduleDto) {
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ScheduleEntity scheduleEntity = mapper.map(scheduleDto, ScheduleEntity.class);
+        return scheduleEntity;
+    }
+
+    public List<ScheduleDto> mapToScheduleDtoList(List<ScheduleEntity> scheduleEntityList) {
+        List<ScheduleDto> retScheduleDtoList = new ArrayList<>();
+        for (ScheduleEntity scheduleEntity : scheduleEntityList) {
+            retScheduleDtoList.add(convertToScheduleDto(scheduleEntity));
+        }
+        return retScheduleDtoList;
     }
 }

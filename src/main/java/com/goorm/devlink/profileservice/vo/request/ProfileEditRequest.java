@@ -1,6 +1,6 @@
-package com.goorm.devlink.profileservice.vo;
+package com.goorm.devlink.profileservice.vo.request;
 
-import com.goorm.devlink.profileservice.entity.ProfileType;
+import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import lombok.*;
 
 import java.util.List;
@@ -9,13 +9,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProfileCreateRequest {
+public class ProfileEditRequest {
 
     private String name;
     private String nickname;
+    private String githubAddress;
     private ProfileType profileType;
     private String introduction;
     private int career;
-    private String address;
     private List<String> stacks;
+    private String address;
 }
