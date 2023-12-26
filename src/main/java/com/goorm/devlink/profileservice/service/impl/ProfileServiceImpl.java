@@ -1,8 +1,10 @@
 package com.goorm.devlink.profileservice.service.impl;
 
 import com.goorm.devlink.profileservice.dto.ProfileDto;
+import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.constant.ProfileType;
+import com.goorm.devlink.profileservice.repository.CalendarRepository;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
@@ -22,6 +24,7 @@ import java.util.List;
 public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
+    private final CalendarRepository calendarRepository;
     private final ModelMapperUtil modelMapperUtil;
 
     @Transactional
@@ -77,6 +80,14 @@ public class ProfileServiceImpl implements ProfileService {
         ProfileEntity profileEntity = modelMapperUtil.convertToProfileEntity(profileDto);
         try {
             profileRepository.save(profileEntity);
+
+            CalendarEntity calendarEntity = new CalendarEntity();
+            calendarEntity.setProfileEntity(profileEntity);
+            try {
+                calendarRepository.save(calendarEntity);
+            } catch (Exception e) {
+                throw new RuntimeException("Calendar creation error.");
+            }
         } catch (Exception e) {
             throw new RuntimeException("Profile creation error.");
         }

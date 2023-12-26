@@ -2,6 +2,7 @@ package com.goorm.devlink.profileservice.controller;
 
 import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
+import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.service.ProfileService;

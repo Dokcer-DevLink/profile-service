@@ -41,13 +41,21 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleDto scheduleDto = ScheduleDto.getInstanceForCreate(scheduleCreateRequest);
         ScheduleEntity scheduleEntity = modelMapperUtil.convertToScheduleEntity(scheduleDto);
         scheduleEntity.setCalendarEntity(calendarEntity);
-        scheduleRepository.save(scheduleEntity);
+        try {
+            scheduleRepository.save(scheduleEntity);
+        } catch (Exception e) {
+            throw new RuntimeException("Schedule creation error.");
+        }
     }
 
     @Transactional
     @Override
     public void deleteScheduleByCalendarEntityAndMentoringUuid(CalendarEntity calendarEntity, String mentoringUuid) {
 
-        scheduleRepository.deleteByCalendarEntityAndMentoringUuid(calendarEntity, mentoringUuid);
+        try {
+            scheduleRepository.deleteByCalendarEntityAndMentoringUuid(calendarEntity, mentoringUuid);
+        } catch (Exception e) {
+            throw new RuntimeException("Schedule delete error.");
+        }
     }
 }

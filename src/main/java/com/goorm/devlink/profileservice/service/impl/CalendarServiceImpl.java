@@ -41,13 +41,10 @@ public class CalendarServiceImpl implements CalendarService {
 
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
         CalendarEntity calendarEntity = calendarRepository.findByProfileEntity(profileEntity);
-        if (calendarEntity != null) {
+        try {
             scheduleService.saveScheduleByCalendarAndCreateRequest(calendarEntity, scheduleCreateRequest);
-        } else {
-            CalendarEntity newCalendarEntity = new CalendarEntity();
-            newCalendarEntity.setProfileEntity(profileEntity);
-            calendarRepository.save(newCalendarEntity);
-            scheduleService.saveScheduleByCalendarAndCreateRequest(newCalendarEntity, scheduleCreateRequest);
+        } catch (Exception e) {
+            throw new RuntimeException("Schedule creation error.");
         }
     }
 
@@ -56,6 +53,10 @@ public class CalendarServiceImpl implements CalendarService {
     public void deleteScheduleByUserUuidAndMentoringUuid(String userUuid, String mentoringUuid) {
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
         CalendarEntity calendarEntity = calendarRepository.findByProfileEntity(profileEntity);
-        scheduleService.deleteScheduleByCalendarEntityAndMentoringUuid(calendarEntity, mentoringUuid);
+        try {
+            scheduleService.deleteScheduleByCalendarEntityAndMentoringUuid(calendarEntity, mentoringUuid);
+        } catch (Exception e) {
+            throw new RuntimeException("Schedule delete error.");
+        }
     }
 }
