@@ -1,7 +1,7 @@
 package com.goorm.devlink.profileservice.service;
 
 import com.goorm.devlink.profileservice.dto.ProfileDto;
-import com.goorm.devlink.profileservice.entity.ProfileType;
+import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
 import org.springframework.data.domain.Slice;

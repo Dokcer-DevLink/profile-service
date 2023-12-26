@@ -1,6 +1,6 @@
 package com.goorm.devlink.profileservice.dto;
 
-import com.goorm.devlink.profileservice.entity.ProfileType;
+import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.vo.request.ProfileCreateRequest;
 import lombok.*;
 

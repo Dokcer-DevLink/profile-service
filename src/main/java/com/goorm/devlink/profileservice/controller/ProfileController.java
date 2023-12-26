@@ -2,8 +2,7 @@ package com.goorm.devlink.profileservice.controller;
 
 import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
-import com.goorm.devlink.profileservice.entity.ProfileType;
-import com.goorm.devlink.profileservice.feign.MentoringServiceFeignClient;
+import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
@@ -29,20 +28,11 @@ public class ProfileController {
     private final ProfileService profileService;
     private final S3UploadService s3UploadService;
     private final CalendarService calendarService;
-    private final MentoringServiceFeignClient mentoringServiceFeignClient;
-
-//    @Autowired
-//    public ProfileController(ProfileService profileService, S3UploadService s3UploadService) {
-//        this.profileService = profileService;
-//        this.s3UploadService = s3UploadService;
-//        profileService.testMethod();
-//    }
 
     /** 마이프로필 조회 **/
     @GetMapping("/api/myprofile")
     public ResponseEntity<MyProfileViewReponse> viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
         ProfileDto profileDto = profileService.getMyProfile(userUuid);
-//        ScheduleDto scheduleDto = mentoringServiceFeignClient.viewUserSchedulesTmp(userUuid); // 서비스 간 통신
         List<ScheduleDto> scheduleDtos = calendarService.getCalendarScheduleDtos(userUuid);
         MyProfileViewReponse myProfileViewResponse = MyProfileViewReponse.getInstanceForResponse(profileDto, scheduleDtos);
         return new ResponseEntity<>(myProfileViewResponse, HttpStatus.OK);
@@ -121,10 +111,4 @@ public class ProfileController {
         ProfileSimpleResponse profileSimpleResponse = new ProfileSimpleResponse(userUuid, profileDto.getProfileImageUrl(), profileDto.getNickname());
         return new ResponseEntity<>(profileSimpleResponse, HttpStatus.OK);
     }
-
-    /** 유저의 스케줄 정보 보내기 (멘토링 서비스와의 통신) **/
-//    @GetMapping("/api/profile/schedule")
-//    public ScheduleDto viewUserSchedules(@RequestParam("userUuid") String userUuid) {
-//        profileService.
-//    }
 }

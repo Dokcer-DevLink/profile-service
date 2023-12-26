@@ -1,8 +1,7 @@
 package com.goorm.devlink.profileservice.repository;
 
-import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
-import com.goorm.devlink.profileservice.entity.ProfileType;
+import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

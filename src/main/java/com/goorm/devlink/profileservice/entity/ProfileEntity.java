@@ -1,5 +1,6 @@
 package com.goorm.devlink.profileservice.entity;
 
+import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import lombok.*;
 
 import javax.persistence.*;
