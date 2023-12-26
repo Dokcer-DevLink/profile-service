@@ -41,10 +41,15 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleDto scheduleDto = ScheduleDto.getInstanceForCreate(scheduleCreateRequest);
         ScheduleEntity scheduleEntity = modelMapperUtil.convertToScheduleEntity(scheduleDto);
         scheduleEntity.setCalendarEntity(calendarEntity);
-        try {
-            scheduleRepository.save(scheduleEntity);
-        } catch (Exception e) {
-            throw new RuntimeException("Schedule creation error.");
+
+        if (scheduleValidationCheck(scheduleEntity)) {
+            try {
+                scheduleRepository.save(scheduleEntity);
+            } catch (Exception e) {
+                throw new RuntimeException("Schedule creation error.");
+            }
+        } else {
+            throw new RuntimeException("There are Schedules already exist in overlapping time zone.");
         }
     }
 
@@ -57,5 +62,16 @@ public class ScheduleServiceImpl implements ScheduleService {
         } catch (Exception e) {
             throw new RuntimeException("Schedule delete error.");
         }
+    }
+
+    private boolean scheduleValidationCheck(ScheduleEntity scheduleEntity) {
+
+        List<ScheduleEntity> toValidCheckSchedules = scheduleRepository.findByCalendarEntityAndStartTimeBetween(
+                scheduleEntity.getCalendarEntity(),
+                scheduleEntity.getStartTime(),
+                scheduleEntity.getStartTime().plusMinutes(scheduleEntity.getUnitTimeCount() * 30));
+
+        if (toValidCheckSchedules.isEmpty()) return true;
+        else return false;
     }
 }

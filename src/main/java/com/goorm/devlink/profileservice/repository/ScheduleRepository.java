@@ -24,4 +24,10 @@ public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> 
     void deleteByCalendarEntityAndMentoringUuid(
             @Param("calendarEntity") CalendarEntity calendarEntity,
             @Param("mentoringUuid") String mentoringUuid);
+
+    @Query("SELECT  s FROM ScheduleEntity s WHERE s.calendarEntity = :calendarEntity AND s.startTime BETWEEN :startTime AND :endTime")
+    List<ScheduleEntity> findByCalendarEntityAndStartTimeBetween(
+            @Param("calendarEntity") CalendarEntity calendarEntity,
+            @Param("startTime") LocalDateTime startTime,
+            @Param("endTime") LocalDateTime endTime);
 }
