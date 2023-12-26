@@ -16,7 +16,7 @@ public class ProfileEditRequest {
     private String githubAddress;
     private ProfileType profileType;
     private String introduction;
-    private int career; // is it years?
+    private int career;
     private List<String> stacks;
     private String address;
 }
