@@ -9,7 +9,8 @@ import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
-import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
+import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -49,11 +50,9 @@ public class ProfileServiceImpl implements ProfileService {
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
 
         profileEntity.setProfileImageUrl(profileImageUrl);
-        profileEntity.setName(profileEditRequest.getName());
         profileEntity.setNickname(profileEditRequest.getNickname());
         profileEntity.setGithubAddress(profileEditRequest.getGithubAddress());
         profileEntity.setIntroduction(profileEditRequest.getIntroduction());
-        profileEntity.setCareer(profileEditRequest.getCareer());
         profileEntity.setProfileType(profileEditRequest.getProfileType());
         profileEntity.setAddress(profileEditRequest.getAddress());
         profileEntity.setStacks(profileEditRequest.getStacks());
@@ -67,10 +66,8 @@ public class ProfileServiceImpl implements ProfileService {
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
 
         profileEntity.setProfileImageUrl(profileEntity.getProfileImageUrl());
-        profileEntity.setName(profileEditRequest.getName());
         profileEntity.setNickname(profileEditRequest.getNickname());
         profileEntity.setIntroduction(profileEditRequest.getIntroduction());
-        profileEntity.setCareer(profileEditRequest.getCareer());
         profileEntity.setProfileType(profileEditRequest.getProfileType());
         profileEntity.setAddress(profileEditRequest.getAddress());
         profileEntity.setStacks(profileEditRequest.getStacks());
@@ -96,10 +93,10 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Transactional(readOnly = true)
     @Override
-    public Slice<ProfileSimpleCardResponse> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
+    public Slice<ProfileSimpleCard> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
         Slice<ProfileEntity> profileEntitySlice = profileRepository.findSliceByStackKeyword(profileType, keyword, PageRequest.of(pageNumber, 8));
-        Slice<ProfileSimpleCardResponse> profileSimpleCardResponseSlice = modelMapperUtil.mapToProfileSimpleCardResponse(profileEntitySlice);
-        return profileSimpleCardResponseSlice;
+        Slice<ProfileSimpleCard> profileSimpleCardSlice = modelMapperUtil.mapToProfileSimpleCard(profileEntitySlice);
+        return profileSimpleCardSlice;
     }
 
     @Transactional

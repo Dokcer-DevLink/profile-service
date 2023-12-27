@@ -31,8 +31,8 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {/
     @Transactional
     @Modifying
     @Query("UPDATE ProfileEntity p " +
-            "SET p.profileImageUrl = :#{#profileEntity.profileImageUrl}, p.name = :#{#profileEntity.name}, p.nickname = :#{#profileEntity.nickname}, " +
-            "p.introduction = :#{#profileEntity.introduction}, p.career = :#{#profileEntity.career}, p.profileType = :#{#profileEntity.profileType}, " +
+            "SET p.profileImageUrl = :#{#profileEntity.profileImageUrl}, p.nickname = :#{#profileEntity.nickname}, " +
+            "p.introduction = :#{#profileEntity.introduction}, p.profileType = :#{#profileEntity.profileType}, " +
             "p.address = :#{#profileEntity.address}, p.stacks = :#{#profileEntity.stacks} WHERE p.userUuid = :#{#profileEntity.userUuid}")
     void updateByProfileEntity(@Param("profileEntity") ProfileEntity profileEntity);
 

@@ -6,7 +6,7 @@ import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ScheduleEntity;
-import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
+import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -34,11 +34,11 @@ public class ModelMapperUtil {
         return profileDto;
     }
 
-    public ProfileSimpleCardResponse convertToProfileSimpleCardResponse(ProfileEntity profileEntity) {
+    public ProfileSimpleCard convertToProfileSimpleCardResponse(ProfileEntity profileEntity) {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        ProfileSimpleCardResponse profileSimpleCardResponse = new ProfileSimpleCardResponse(
+        ProfileSimpleCard profileSimpleCard = new ProfileSimpleCard(
                 profileEntity.getUserUuid(), profileEntity.getProfileImageUrl(), profileEntity.getNickname(), profileEntity.getAddress(), profileEntity.getStacks());
-        return profileSimpleCardResponse;
+        return profileSimpleCard;
     }
 
     public List<ProfileDto> convertToProfileDtoList(List<ProfileEntity> profileEntityList) {
@@ -57,12 +57,12 @@ public class ModelMapperUtil {
         return new SliceImpl<>(profileDtoList, profileEntitySlice.getPageable(), profileEntitySlice.hasNext());
     }
 
-    public Slice<ProfileSimpleCardResponse> mapToProfileSimpleCardResponse(Slice<ProfileEntity> profileEntitySlice) {
-        List<ProfileSimpleCardResponse> profileSimpleCardResponseList = profileEntitySlice.getContent().stream()
+    public Slice<ProfileSimpleCard> mapToProfileSimpleCard(Slice<ProfileEntity> profileEntitySlice) {
+        List<ProfileSimpleCard> profileSimpleCardList = profileEntitySlice.getContent().stream()
                 .map(this::convertToProfileSimpleCardResponse)
                 .collect(Collectors.toList());
 
-        return new SliceImpl<>(profileSimpleCardResponseList, profileEntitySlice.getPageable(), profileEntitySlice.hasNext());
+        return new SliceImpl<>(profileSimpleCardList, profileEntitySlice.getPageable(), profileEntitySlice.hasNext());
     }
 
     public CalendarDto convertToCalendarDto(CalendarEntity calendarEntity) {
@@ -96,4 +96,6 @@ public class ModelMapperUtil {
         }
         return retScheduleDtoList;
     }
+
+
 }

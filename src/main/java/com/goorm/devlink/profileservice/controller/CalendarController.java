@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class CalendarController {
 
     /** 스케줄 생성 **/
     @PostMapping("/api/myprofile/schedule")
-    public ResponseEntity createCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestBody ScheduleCreateRequest scheduleCreateRequest) {
+    public ResponseEntity createCalendarSchedule(@RequestHeader("userUuid") String userUuid, @Valid @RequestBody ScheduleCreateRequest scheduleCreateRequest) {
         calendarService.saveCalendarByScheduleCreateRequest(userUuid, scheduleCreateRequest);
         return ResponseEntity.ok().build();
     }

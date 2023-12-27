@@ -15,18 +15,15 @@ public class ProfileDto {
 
     private String userUuid;
     private String profileImageUrl;
-    private String name;
     private String nickname;
     private String githubAddress;
     private ProfileType profileType;
     private String introduction;
-    private int career;
     private String address;
     private List<String> stacks;
 
-    public ProfileDto(String profileImageUrl, String name, String nickname, String githubAddress, ProfileType profileType, String introduction, String address, List<String> stacks) {
+    public ProfileDto(String profileImageUrl, String nickname, String githubAddress, ProfileType profileType, String introduction, String address, List<String> stacks) {
         this.profileImageUrl = profileImageUrl;
-        this.name = name;
         this.nickname = nickname;
         this.githubAddress = githubAddress;
         this.profileType = profileType;

@@ -9,7 +9,8 @@ import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.vo.request.ProfileCreateRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.response.MyProfileViewReponse;
-import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
+import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardListResponse;
 import com.goorm.devlink.profileservice.vo.response.ProfileSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class ProfileController {
     /** 마이프로필 생성 **/
     @PostMapping("/api/myprofile")
     public ResponseEntity createMyProfile(@RequestHeader("userUuid") String userUuid,
-                                          @RequestBody ProfileCreateRequest profileCreateRequest) throws IOException {
+                                          @Valid @RequestBody ProfileCreateRequest profileCreateRequest) {
 
         ProfileDto profileDto = ProfileDto.getInstanceForCreate(userUuid, profileCreateRequest);
         profileService.createProfile(profileDto);
@@ -50,8 +52,8 @@ public class ProfileController {
 
     /** 마이프로필 수정 **/
     @PutMapping("/api/myprofile")
-    public ResponseEntity editMyProfile(@RequestPart("data") ProfileEditRequest profileEditRequest,
-                                        @RequestPart("file") MultipartFile file,
+    public ResponseEntity editMyProfile(@Valid @RequestPart("data") ProfileEditRequest profileEditRequest,
+                                        @Valid @RequestPart("file") MultipartFile file,
                                         @RequestHeader("userUuid") String userUuid) throws IOException {
 
         if (!file.isEmpty()) {
@@ -80,20 +82,21 @@ public class ProfileController {
 
     /** 프로필 리스트(검색) 조회 **/
     @GetMapping("/api/profile/list")
-    public ResponseEntity<Slice<ProfileSimpleCardResponse>> viewProfileList(@RequestParam("profileType") ProfileType profileType,
-                                                                            @RequestParam("keyword") String keyword,
-                                                                            @RequestParam("pageNumber") int pageNumber) {
+    public ResponseEntity<ProfileSimpleCardListResponse> viewProfileList(@RequestParam("profileType") ProfileType profileType,
+                                                                    @RequestParam("keyword") String keyword,
+                                                                    @RequestParam("pageNumber") int pageNumber) {
 
-        Slice<ProfileSimpleCardResponse> profileSimpleCardResponseSlice = profileService.getSimpleCardSliceByTypeAndKeyword(profileType, keyword, pageNumber);
-        return new ResponseEntity<>(profileSimpleCardResponseSlice, HttpStatus.OK);
+        Slice<ProfileSimpleCard> profileSimpleCardSlice = profileService.getSimpleCardSliceByTypeAndKeyword(profileType, keyword, pageNumber);
+        ProfileSimpleCardListResponse profileSimpleCardListResponse = ProfileSimpleCardListResponse.getInstance(profileSimpleCardSlice);
+        return new ResponseEntity<>(profileSimpleCardListResponse, HttpStatus.OK);
     }
 
     /** 추천 멘토/멘티 프로필 슬라이더 **/
     @GetMapping("/api/profile/slider")
-    public ResponseEntity<Slice<ProfileSimpleCardResponse>> viewProfileSlider(@RequestParam("profileType") ProfileType profileType, @RequestParam("keyword") String keyword) {
+    public ResponseEntity<List<ProfileSimpleCard>> viewProfileSlider(@RequestParam("profileType") ProfileType profileType, @RequestParam("keyword") String keyword) {
 
-        Slice<ProfileSimpleCardResponse> profileSimpleCardResponseSlice = profileService.getSimpleCardSliceByTypeAndKeyword(profileType, keyword, 0);
-        return new ResponseEntity<>(profileSimpleCardResponseSlice, HttpStatus.OK);
+        Slice<ProfileSimpleCard> profileSimpleCardSlice = profileService.getSimpleCardSliceByTypeAndKeyword(profileType, keyword, 0);
+        return new ResponseEntity<>(profileSimpleCardSlice.toList(), HttpStatus.OK);
     }
 
     /** 유저 스택 리스트 조회 **/

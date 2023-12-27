@@ -1,4 +1,4 @@
-package com.goorm.devlink.profileservice.vo.response;
+package com.goorm.devlink.profileservice.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileSimpleCardResponse {
+public class ProfileSimpleCard {
 
     String userUuid;
     String profileImageUrl;
@@ -19,8 +19,8 @@ public class ProfileSimpleCardResponse {
     String address;
     List<String> stacks;
 
-    public static ProfileSimpleCardResponse getInstance(String userUuid, String profileImageUrl, String nickname, String address, List<String> stacks) {
-        return ProfileSimpleCardResponse.builder()
+    public static ProfileSimpleCard getInstance(String userUuid, String profileImageUrl, String nickname, String address, List<String> stacks) {
+        return ProfileSimpleCard.builder()
                 .userUuid(userUuid)
                 .profileImageUrl(profileImageUrl)
                 .nickname(nickname)
