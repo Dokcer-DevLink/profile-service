@@ -32,6 +32,6 @@ public class ProfileEntity {
     @CollectionTable(name = "stack", joinColumns = @JoinColumn(name = "profile_id"))
     private List<String> stacks;
 
-    @OneToOne(mappedBy = "profileEntity")
+    @OneToOne(mappedBy = "profileEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private CalendarEntity calendarEntity;
 }

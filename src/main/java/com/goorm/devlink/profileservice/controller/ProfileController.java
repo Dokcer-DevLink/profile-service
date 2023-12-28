@@ -6,6 +6,7 @@ import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
+import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.vo.request.ProfileCreateRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.response.MyProfileViewReponse;
@@ -22,18 +23,23 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final S3UploadService s3UploadService;
     private final CalendarService calendarService;
+    private final S3UploadService s3UploadService;
+    private final MessageUtil messageUtil;
 
     /** 마이프로필 조회 **/
     @GetMapping("/api/myprofile")
     public ResponseEntity<MyProfileViewReponse> viewMyProfilePage(@RequestHeader("userUuid") String userUuid) {
+        if (userUuid.isEmpty()) {
+            throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
+        }
         ProfileDto profileDto = profileService.getMyProfile(userUuid);
         List<ScheduleDto> scheduleDtos = calendarService.getCalendarScheduleDtos(userUuid);
         MyProfileViewReponse myProfileViewResponse = MyProfileViewReponse.getInstanceForResponse(profileDto, scheduleDtos);
@@ -44,7 +50,9 @@ public class ProfileController {
     @PostMapping("/api/myprofile")
     public ResponseEntity createMyProfile(@RequestHeader("userUuid") String userUuid,
                                           @Valid @RequestBody ProfileCreateRequest profileCreateRequest) {
-
+        if (userUuid.isEmpty()) {
+            throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
+        }
         ProfileDto profileDto = ProfileDto.getInstanceForCreate(userUuid, profileCreateRequest);
         profileService.createProfile(profileDto);
         return ResponseEntity.ok().build();
@@ -56,6 +64,9 @@ public class ProfileController {
                                         @Valid @RequestPart("file") MultipartFile file,
                                         @RequestHeader("userUuid") String userUuid) throws IOException {
 
+        if (userUuid.isEmpty()) {
+            throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
+        }
         if (!file.isEmpty()) {
             String profileImageUrl = s3UploadService.saveFile(file);
             profileService.updateProfile(profileEditRequest, userUuid, profileImageUrl);
