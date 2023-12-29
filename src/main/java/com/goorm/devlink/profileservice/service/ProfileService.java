@@ -3,8 +3,10 @@ package com.goorm.devlink.profileservice.service;
 import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
-import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardResponse;
+import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
 import org.springframework.data.domain.Slice;
+
+import java.util.List;
 
 public interface ProfileService {
 
@@ -18,7 +20,9 @@ public interface ProfileService {
 
     ProfileDto getProfileByUserUuid(String userUuid);
 
-    Slice<ProfileSimpleCardResponse> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber);
+    Slice<ProfileSimpleCard> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber);
+
+    List<ProfileSimpleCard> getSimpleCardListForRecommend(ProfileType profileType);
 
     void deleteProfileByUserUuid(String userUuid);
 }

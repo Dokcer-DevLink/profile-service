@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "Schedule")
 public class ScheduleEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private Long id;
 
@@ -23,5 +23,6 @@ public class ScheduleEntity {
     private String mentoringUuid;
     @Column(name = "start_time")
     private LocalDateTime startTime;
+    @Column(name = "unit_time_count")
     private int unitTimeCount;
 }
