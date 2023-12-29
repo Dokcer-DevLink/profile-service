@@ -14,6 +14,5 @@ public class ProfileCreateRequest {
 
     @NotBlank(message = "{request.required}")
     private String nickname;
-    @NotNull(message = "{request.required}")
     private String githubAddress;
 }

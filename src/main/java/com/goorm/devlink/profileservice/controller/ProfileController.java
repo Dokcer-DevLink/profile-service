@@ -10,11 +10,8 @@ import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.vo.request.EmptyScheduleRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileCreateRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
-import com.goorm.devlink.profileservice.vo.response.EmptyScheduleResponse;
-import com.goorm.devlink.profileservice.vo.response.MyProfileViewReponse;
+import com.goorm.devlink.profileservice.vo.response.*;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
-import com.goorm.devlink.profileservice.vo.response.ProfileSimpleCardListResponse;
-import com.goorm.devlink.profileservice.vo.response.ProfileSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -55,7 +52,7 @@ public class ProfileController {
         }
         ProfileDto profileDto = ProfileDto.getInstanceForCreate(userUuid, profileCreateRequest);
         profileService.createProfile(profileDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ProfileMessageResponse.getInstance(userUuid, messageUtil.getProfileCreateMessage()));
     }
 
     /** 마이프로필 수정 **/
@@ -69,11 +66,10 @@ public class ProfileController {
         if (profileEditRequest.getFileData() != null) {
             String profileImageUrl = s3UploadService.saveFile(profileEditRequest.getFileData(), userUuid);
             profileService.updateProfile(profileEditRequest, userUuid, profileImageUrl);
-            return ResponseEntity.accepted().build();
         } else {
             profileService.updateProfileWithoutImageUrl(profileEditRequest, userUuid);
-            return ResponseEntity.accepted().build();
         }
+        return ResponseEntity.ok(ProfileMessageResponse.getInstance(userUuid, messageUtil.getProfileUpdateMessage()));
     }
 
     /** 마이프로필 삭제 **/
@@ -83,7 +79,7 @@ public class ProfileController {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
         }
         profileService.deleteProfileByUserUuid(userUuid);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ProfileMessageResponse.getInstance(userUuid, messageUtil.getProfileDeleteMessage()));
     }
 
     /** 프로필(타유저) 조회 **/
