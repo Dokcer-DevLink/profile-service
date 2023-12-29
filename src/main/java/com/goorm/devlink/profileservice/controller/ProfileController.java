@@ -65,7 +65,7 @@ public class ProfileController {
     /** 마이프로필 수정 **/
     @PutMapping("/api/myprofile")
     public ResponseEntity editMyProfile(@Valid @RequestBody ProfileEditRequest profileEditRequest,
-                                        @RequestHeader("userUuid") String userUuid) throws IOException {
+                                        @RequestHeader("userUuid") String userUuid) {
 
         if (userUuid.isEmpty()) {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
