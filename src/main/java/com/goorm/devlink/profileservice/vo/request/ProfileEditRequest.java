@@ -19,7 +19,7 @@ public class ProfileEditRequest {
     private String nickname;
     @NotNull(message = "{request.required}")
     private String githubAddress;
-    @NotNull(message = "{request.required}")//@JsonIgnore
+    @NotNull(message = "{request.required}")
     private ProfileType profileType;
     @NotNull(message = "{request.required}")
     private String introduction;

@@ -1,7 +1,5 @@
 package com.goorm.devlink.profileservice.controller;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.constant.ProfileType;
@@ -22,10 +20,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -65,12 +61,12 @@ public class ProfileController {
     /** 마이프로필 수정 **/
     @PutMapping("/api/myprofile")
     public ResponseEntity editMyProfile(@Valid @RequestBody ProfileEditRequest profileEditRequest,
-                                        @RequestHeader("userUuid") String userUuid) throws IOException {
+                                        @RequestHeader("userUuid") String userUuid) {
 
         if (userUuid.isEmpty()) {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
         }
-        if (!profileEditRequest.getFileData().isEmpty()) {
+        if (profileEditRequest.getFileData() != null) {
             String profileImageUrl = s3UploadService.saveFile(profileEditRequest.getFileData(), userUuid);
             profileService.updateProfile(profileEditRequest, userUuid, profileImageUrl);
             return ResponseEntity.accepted().build();

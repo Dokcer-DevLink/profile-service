@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -17,6 +18,12 @@ public class ControllerExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResult> getHandler(MethodArgumentNotValidException exception, HttpServletRequest request) {
         return new ResponseEntity<>(ErrorResult.getInstance(getMethodArgumentNotValidMessage(exception),request.getRequestURL().toString()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<ErrorResult> getHandler(MissingRequestHeaderException exception, HttpServletRequest request) {
+        return new ResponseEntity<>(ErrorResult.getInstance(exception.getMessage(), request.getRequestURL().toString()),
                 HttpStatus.BAD_REQUEST);
     }
 
