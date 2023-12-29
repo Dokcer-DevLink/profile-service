@@ -8,6 +8,7 @@ import com.goorm.devlink.profileservice.repository.CalendarRepository;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.service.ScheduleService;
+import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
 import com.goorm.devlink.profileservice.vo.request.ScheduleCreateRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class CalendarServiceImpl implements CalendarService {
     private final CalendarRepository calendarRepository;
     private final ScheduleService scheduleService;
     private final ModelMapperUtil modelMapperUtil;
+    private final MessageUtil messageUtil;
 
     @Override
     public List<ScheduleDto> getCalendarScheduleDtos(String userUuid) {
@@ -43,11 +45,7 @@ public class CalendarServiceImpl implements CalendarService {
 
         ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
         CalendarEntity calendarEntity = calendarRepository.findByProfileEntity(profileEntity);
-        try {
-            scheduleService.saveScheduleByCalendarAndCreateRequest(calendarEntity, scheduleCreateRequest);
-        } catch (Exception e) {
-            throw new RuntimeException("Schedule already exist in overlapping time zone or creation error.");
-        }
+        scheduleService.saveScheduleByCalendarAndCreateRequest(calendarEntity, scheduleCreateRequest);
     }
 
     @Transactional
@@ -58,7 +56,7 @@ public class CalendarServiceImpl implements CalendarService {
         try {
             scheduleService.deleteScheduleByCalendarEntityAndMentoringUuid(calendarEntity, mentoringUuid);
         } catch (Exception e) {
-            throw new RuntimeException("Schedule delete error.");
+            throw new RuntimeException(messageUtil.getScheduleCancelErrorMessage());
         }
     }
 

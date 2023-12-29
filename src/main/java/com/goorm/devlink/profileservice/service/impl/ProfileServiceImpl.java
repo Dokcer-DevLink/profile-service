@@ -43,33 +43,39 @@ public class ProfileServiceImpl implements ProfileService {
             try {
                 calendarRepository.save(calendarEntity);
             } catch (Exception e) {
-                throw new RuntimeException("Calendar creation error.");
+                throw new RuntimeException(messageUtil.getCalendarCreateErrorMessage());
             }
         } catch (Exception e) {
-            throw new RuntimeException("Profile creation error.");
+            throw new RuntimeException(messageUtil.getProfileCreateErrorMessage());
         }
     }
 
     @Transactional
     @Override
     public void updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl) {
-        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+        ProfileEntity profileEntity = Optional.ofNullable(profileRepository.findByUserUuid(userUuid)).orElseThrow(() -> {
+            throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
 
-        profileEntity.setProfileImageUrl(profileImageUrl);
-        profileEntity.setNickname(profileEditRequest.getNickname());
-        profileEntity.setGithubAddress(profileEditRequest.getGithubAddress());
-        profileEntity.setIntroduction(profileEditRequest.getIntroduction());
-        profileEntity.setProfileType(profileEditRequest.getProfileType());
-        profileEntity.setAddress(profileEditRequest.getAddress());
-        profileEntity.setStacks(profileEditRequest.getStacks());
+        try {
+            profileEntity.setProfileImageUrl(profileImageUrl);
+            profileEntity.setNickname(profileEditRequest.getNickname());
+            profileEntity.setGithubAddress(profileEditRequest.getGithubAddress());
+            profileEntity.setIntroduction(profileEditRequest.getIntroduction());
+            profileEntity.setProfileType(profileEditRequest.getProfileType());
+            profileEntity.setAddress(profileEditRequest.getAddress());
+            profileEntity.setStacks(profileEditRequest.getStacks());
 
-        profileRepository.save(profileEntity);
+            profileRepository.save(profileEntity);
+        } catch (Exception e) {
+            throw new RuntimeException(messageUtil.getProfileUpdateErrorMessage());
+        }
     }
 
     @Transactional
     @Override
     public void updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid) {
-        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+        ProfileEntity profileEntity = Optional.ofNullable(profileRepository.findByUserUuid(userUuid)).orElseThrow(() -> {
+            throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
 
         profileEntity.setProfileImageUrl(profileEntity.getProfileImageUrl());
         profileEntity.setNickname(profileEditRequest.getNickname());
@@ -119,7 +125,7 @@ public class ProfileServiceImpl implements ProfileService {
         try {
             profileRepository.deleteProfileByUserUuid(userUuid);
         } catch (Exception e) {
-            throw new RuntimeException("Profile delete error.");
+            throw new RuntimeException(messageUtil.getProfileDeleteMessage());
         }
     }
 }

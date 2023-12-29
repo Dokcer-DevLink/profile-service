@@ -10,6 +10,18 @@ public class MessageUtil {
 
     private final MessageSource messageSource;
 
+    public String getProfileCreateMessage() {
+        return getMessage("response.profile.create");
+    }
+
+    public String getProfileUpdateMessage() {
+        return getMessage("response.profile.update");
+    }
+
+    public String getProfileDeleteMessage() {
+        return getMessage("response.profile.delete");
+    }
+
     public String getScheduleCreateMessage() {
         return getMessage("response.schedule.create");
     }
@@ -30,8 +42,12 @@ public class MessageUtil {
         return getMessage("request.nosuch.userUuid", new String[] {userUuid});
     }
 
-    public String getMentoringUuidNoSuchMessage(String mentoringUuid) {
-        return getMessage("request.nosuch.mentoringUuid", new String[] {mentoringUuid});
+    public String getScheduleCreateOverlapMessage() {
+        return getMessage("request.overlap.schedule.create");
+    }
+
+    public String getUnsupportedFileTypeErrorMessage() {
+        return getMessage("request.error.file-upload.unsupported");
     }
 
     public String getProfileCreateErrorMessage() {
@@ -46,12 +62,12 @@ public class MessageUtil {
         return getMessage("runtime.error.calendar.create");
     }
 
-    public String getCalendarUpdateErrorMessage() {
-        return getMessage("runtime.error.calendar.update");
+    public String getScheduleCreateErrorMessage() {
+        return getMessage("runtime.error.schedule.create");
     }
 
-    public String getUnsupportedFileTypeErrorMessage() {
-        return getMessage("runtime.error.file-upload.unsupported");
+    public String getScheduleCancelErrorMessage() {
+        return getMessage("runtime.error.schedule.cancel");
     }
 
     private String getMessage(String messageCode) {
