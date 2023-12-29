@@ -5,6 +5,7 @@ import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.vo.response.CalendarViewResponse;
 import com.goorm.devlink.profileservice.vo.request.ScheduleCreateRequest;
+import com.goorm.devlink.profileservice.vo.response.ScheduleMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class CalendarController {
 
     /** 스케줄 생성 **/
     @PostMapping("/api/myprofile/schedule")
-    public ResponseEntity createCalendarSchedule(@RequestHeader("userUuid") String userUuid, @Valid @RequestBody ScheduleCreateRequest scheduleCreateRequest) {
+    public ResponseEntity<ScheduleMessageResponse> createCalendarSchedule(@RequestHeader("userUuid") String userUuid, @Valid @RequestBody ScheduleCreateRequest scheduleCreateRequest) {
         if (userUuid.isEmpty()) {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
         }
@@ -42,12 +43,12 @@ public class CalendarController {
             throw new NoSuchElementException(messageUtil.getMentoringUuidEmptyMessage());
         }
         calendarService.saveCalendarByScheduleCreateRequest(userUuid, scheduleCreateRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ScheduleMessageResponse.getInstance(userUuid, scheduleCreateRequest.getMentoringUuid(), messageUtil.getScheduleCreateMessage()));
     }
 
     /** 스케줄 취소 **/
     @DeleteMapping("/api/myprofile/schedule")
-    public ResponseEntity cancelCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestParam("mentoringUuid") String mentoringUuid) {
+    public ResponseEntity<ScheduleMessageResponse> cancelCalendarSchedule(@RequestHeader("userUuid") String userUuid, @RequestParam("mentoringUuid") String mentoringUuid) {
         if (userUuid.isEmpty()) {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
         }
@@ -55,6 +56,6 @@ public class CalendarController {
             throw new NoSuchElementException(messageUtil.getMentoringUuidEmptyMessage());
         }
         calendarService.deleteScheduleByUserUuidAndMentoringUuid(userUuid, mentoringUuid);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.ok(ScheduleMessageResponse.getInstance(userUuid, mentoringUuid, messageUtil.getScheduleCancelMessage()));
     }
 }
