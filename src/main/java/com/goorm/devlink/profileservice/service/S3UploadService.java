@@ -35,8 +35,8 @@ public class S3UploadService {
 
         String fileName = "profile/"+ userUuid;
 
-//        if (amazonS3.doesObjectExist(bucketName, fileName))
-//            amazonS3.deleteObject(bucketName, fileName);
+        if (amazonS3.doesObjectExist(bucketName, fileName))
+            amazonS3.deleteObject(bucketName, fileName);
 
         amazonS3.putObject(bucketName, fileName, bis, metadata);
         return amazonS3.getUrl(bucketName, fileName).toString();
