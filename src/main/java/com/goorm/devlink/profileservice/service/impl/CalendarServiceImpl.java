@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,5 +60,24 @@ public class CalendarServiceImpl implements CalendarService {
         } catch (Exception e) {
             throw new RuntimeException("Schedule delete error.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<String> findEnableUserUuidListByValidCalendar(List<String> userUuidList, LocalDateTime startTime, int unitTimeCount) {
+        List<String> enableUserUuidList = new ArrayList<>();
+        List<CalendarEntity> calendarEntityList = new ArrayList<>();
+        for (String userUuid : userUuidList) {
+            ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+            CalendarEntity calendarEntity = calendarRepository.findByProfileEntity(profileEntity);
+            calendarEntityList.add(calendarEntity);
+        }
+        List<CalendarEntity> validCalendarEntityList = scheduleService.getValidCalendarEntityList(calendarEntityList, startTime, unitTimeCount);
+        for (CalendarEntity calendarEntity : validCalendarEntityList) {
+            ProfileEntity profileEntity = calendarEntity.getProfileEntity();
+            enableUserUuidList.add(profileEntity.getUserUuid());
+        }
+
+        return enableUserUuidList;
     }
 }

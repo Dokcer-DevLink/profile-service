@@ -57,12 +57,19 @@ public class ModelMapperUtil {
         return new SliceImpl<>(profileDtoList, profileEntitySlice.getPageable(), profileEntitySlice.hasNext());
     }
 
-    public Slice<ProfileSimpleCard> mapToProfileSimpleCard(Slice<ProfileEntity> profileEntitySlice) {
+    public Slice<ProfileSimpleCard> mapProfileEntitySliceToProfileSimpleCard(Slice<ProfileEntity> profileEntitySlice) {
         List<ProfileSimpleCard> profileSimpleCardList = profileEntitySlice.getContent().stream()
                 .map(this::convertToProfileSimpleCardResponse)
                 .collect(Collectors.toList());
 
         return new SliceImpl<>(profileSimpleCardList, profileEntitySlice.getPageable(), profileEntitySlice.hasNext());
+    }
+
+    public List<ProfileSimpleCard> mapProfileEntityListToProfileSimpleCard(List<ProfileEntity> profileEntityList) {
+        List<ProfileSimpleCard> profileSimpleCardList = profileEntityList.stream()
+                .map(this::convertToProfileSimpleCardResponse)
+                .collect(Collectors.toList());
+        return profileSimpleCardList;
     }
 
     public CalendarDto convertToCalendarDto(CalendarEntity calendarEntity) {

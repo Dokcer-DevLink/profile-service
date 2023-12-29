@@ -23,5 +23,6 @@ public class ScheduleEntity {
     private String mentoringUuid;
     @Column(name = "start_time")
     private LocalDateTime startTime;
+    @Column(name = "unit_time_count")
     private int unitTimeCount;
 }

@@ -1,9 +1,9 @@
 package com.goorm.devlink.profileservice.vo.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import lombok.*;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,11 +14,12 @@ import java.util.List;
 @Builder
 public class ProfileEditRequest {
 
+    private String fileData;
     @NotBlank(message = "{request.required}")
     private String nickname;
     @NotNull(message = "{request.required}")
     private String githubAddress;
-    @NotNull(message = "{request.required}")
+    @NotNull(message = "{request.required}")//@JsonIgnore
     private ProfileType profileType;
     @NotNull(message = "{request.required}")
     private String introduction;

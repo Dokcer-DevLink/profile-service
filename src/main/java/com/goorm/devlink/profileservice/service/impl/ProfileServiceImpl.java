@@ -7,6 +7,7 @@ import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.repository.CalendarRepository;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import com.goorm.devlink.profileservice.service.ProfileService;
+import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
@@ -17,6 +18,10 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
@@ -24,6 +29,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final CalendarRepository calendarRepository;
     private final ModelMapperUtil modelMapperUtil;
+    private final MessageUtil messageUtil;
 
     @Transactional
     @Override
@@ -78,7 +84,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(readOnly = true)
     @Override
     public ProfileDto getMyProfile(String userUuid) {
-        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+        ProfileEntity profileEntity = Optional.ofNullable(profileRepository.findByUserUuid(userUuid)).orElseThrow(() -> {
+            throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
         ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
         return profileDto;
     }
@@ -86,7 +93,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(readOnly = true)
     @Override
     public ProfileDto getProfileByUserUuid(String userUuid) {
-        ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+        ProfileEntity profileEntity = Optional.ofNullable(profileRepository.findByUserUuid(userUuid)).orElseThrow(() -> {
+            throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
         ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
         return profileDto;
     }
@@ -95,8 +103,14 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Slice<ProfileSimpleCard> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber) {
         Slice<ProfileEntity> profileEntitySlice = profileRepository.findSliceByStackKeyword(profileType, keyword, PageRequest.of(pageNumber, 8));
-        Slice<ProfileSimpleCard> profileSimpleCardSlice = modelMapperUtil.mapToProfileSimpleCard(profileEntitySlice);
+        Slice<ProfileSimpleCard> profileSimpleCardSlice = modelMapperUtil.mapProfileEntitySliceToProfileSimpleCard(profileEntitySlice);
         return profileSimpleCardSlice;
+    }
+
+    public List<ProfileSimpleCard> getSimpleCardListForRecommend(ProfileType profileType) {
+        List<ProfileEntity> profileEntityList = profileRepository.findListByProfileType(profileType, PageRequest.of(0, 8));
+        List<ProfileSimpleCard> profileSimpleCardList = modelMapperUtil.mapProfileEntityListToProfileSimpleCard(profileEntityList);
+        return profileSimpleCardList;
     }
 
     @Transactional

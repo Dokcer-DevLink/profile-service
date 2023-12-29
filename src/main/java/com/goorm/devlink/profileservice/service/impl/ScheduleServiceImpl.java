@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -65,6 +66,26 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<CalendarEntity> getValidCalendarEntityList(List<CalendarEntity> calendarEntityList, LocalDateTime startTime, int unitTimeCount) {
+
+        List<CalendarEntity> validCalendarEntityList = new ArrayList<>();
+        for (CalendarEntity calendarEntity : calendarEntityList) {
+            List<ScheduleEntity> scheduleEntities = scheduleRepository.findByCalendarEntity(calendarEntity);
+            boolean isValid = true;
+            for (ScheduleEntity schedule : scheduleEntities) {
+                if (!scheduleValidationCheckByTime(schedule, startTime, unitTimeCount)) {
+                    isValid = false;
+                    break;
+                }
+            }
+            if (isValid) validCalendarEntityList.add(calendarEntity);
+            else continue;
+        }
+        return validCalendarEntityList;
+    }
+
     private boolean scheduleValidationCheck(ScheduleEntity scheduleEntity) {
 
         LocalDateTime startTimeToValidCheck = scheduleEntity.getStartTime();
@@ -74,10 +95,19 @@ public class ScheduleServiceImpl implements ScheduleService {
         for (ScheduleEntity existSchedule : allSchedules) {
             LocalDateTime existStartTime = existSchedule.getStartTime();
             LocalDateTime existEndTime = existStartTime.plusMinutes(existSchedule.getUnitTimeCount() * 30);
-            if ((startTimeToValidCheck.isAfter(existStartTime) && startTimeToValidCheck.isBefore(existEndTime)) ||
-                    (endTimeToValidCheck.isAfter(existStartTime) && endTimeToValidCheck.isBefore(existEndTime)))
+            if (startTimeToValidCheck.isBefore(existEndTime) && endTimeToValidCheck.isAfter(existStartTime))
                 return false;
         }
+        return true;
+    }
+
+    private boolean scheduleValidationCheckByTime(ScheduleEntity scheduleEntity, LocalDateTime startTime, int unitTimeCount) {
+
+        LocalDateTime startTimeToValidCheck = scheduleEntity.getStartTime();
+        LocalDateTime endTimeToValidCheck = startTimeToValidCheck.plusMinutes(scheduleEntity.getUnitTimeCount() * 30);
+
+        if (startTimeToValidCheck.isBefore(startTime.plusMinutes(unitTimeCount * 30)) && endTimeToValidCheck.isAfter(startTime))
+            return false;
         return true;
     }
 }

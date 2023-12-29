@@ -6,6 +6,8 @@ import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 public interface ProfileService {
 
     void createProfile(ProfileDto profileDto);
@@ -19,6 +21,8 @@ public interface ProfileService {
     ProfileDto getProfileByUserUuid(String userUuid);
 
     Slice<ProfileSimpleCard> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, int pageNumber);
+
+    List<ProfileSimpleCard> getSimpleCardListForRecommend(ProfileType profileType);
 
     void deleteProfileByUserUuid(String userUuid);
 }

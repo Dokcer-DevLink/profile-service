@@ -22,7 +22,7 @@ public class MessageUtil {
         return getMessage("request.empty.userUuid");
     }
 
-    public String getMentoringUuidMessage() {
+    public String getMentoringUuidEmptyMessage() {
         return getMessage("request.empty.mentoringUuid");
     }
 

@@ -20,13 +20,16 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {/
     ProfileEntity findByUserUuid(@Param("userUuid") String userUuid);
 
     @Transactional
-    @Query("SELECT DISTINCT p FROM Profi" +
-            "leEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
+    @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
     List<ProfileEntity> findProfileListByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword);
 
     @Transactional
-    @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')") // s.stacks = :keyword
+    @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
     Slice<ProfileEntity> findSliceByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword, Pageable pageable);
+
+    @Transactional
+    @Query("SELECT p FROM ProfileEntity p WHERE p.profileType = :profileType OR p.profileType = 'BOTH'")
+    List<ProfileEntity> findListByProfileType(@Param("profileType") ProfileType profileType, Pageable pageable);
 
     @Transactional
     @Modifying

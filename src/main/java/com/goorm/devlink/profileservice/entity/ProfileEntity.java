@@ -29,7 +29,7 @@ public class ProfileEntity {
     private ProfileType profileType;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "stack", joinColumns = @JoinColumn(name = "profile_id"))
+    @CollectionTable(name = "profile_stack", joinColumns = @JoinColumn(name = "profile_id"))
     private List<String> stacks;
 
     @OneToOne(mappedBy = "profileEntity", cascade = CascadeType.ALL, orphanRemoval = true)
