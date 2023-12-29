@@ -50,6 +50,10 @@ public class MessageUtil {
         return getMessage("runtime.error.calendar.update");
     }
 
+    public String getUnsupportedFileTypeErrorMessage() {
+        return getMessage("runtime.error.file-upload.unsupported");
+    }
+
     private String getMessage(String messageCode) {
         return messageSource.getMessage(messageCode, new String[]{}, Locale.KOREA);
     }
