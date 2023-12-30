@@ -52,7 +52,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Transactional
     @Override
-    public void updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl) {
+    public ProfileDto updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl) {
         ProfileEntity profileEntity = Optional.ofNullable(profileRepository.findByUserUuid(userUuid)).orElseThrow(() -> {
             throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
 
@@ -65,7 +65,9 @@ public class ProfileServiceImpl implements ProfileService {
             profileEntity.setAddress(profileEditRequest.getAddress());
             profileEntity.setStacks(profileEditRequest.getStacks());
 
-            profileRepository.save(profileEntity);
+            ProfileEntity profile = profileRepository.save(profileEntity);
+            ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
+            return profileDto;
         } catch (Exception e) {
             throw new RuntimeException(messageUtil.getProfileUpdateErrorMessage());
         }
@@ -73,7 +75,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Transactional
     @Override
-    public void updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid) {
+    public ProfileDto updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid) {
         ProfileEntity profileEntity = Optional.ofNullable(profileRepository.findByUserUuid(userUuid)).orElseThrow(() -> {
             throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
 
@@ -84,7 +86,8 @@ public class ProfileServiceImpl implements ProfileService {
         profileEntity.setAddress(profileEditRequest.getAddress());
         profileEntity.setStacks(profileEditRequest.getStacks());
 
-        profileRepository.save(profileEntity);
+        ProfileEntity profile = profileRepository.save(profileEntity);
+        return modelMapperUtil.convertToProfileDto(profileEntity);
     }
 
     @Transactional(readOnly = true)

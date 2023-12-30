@@ -12,9 +12,9 @@ public interface ProfileService {
 
     void createProfile(ProfileDto profileDto);
 
-    void updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl);
+    ProfileDto updateProfile(ProfileEditRequest profileEditRequest, String userUuid, String profileImageUrl);
 
-    void updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid);
+    ProfileDto updateProfileWithoutImageUrl(ProfileEditRequest profileEditRequest, String userUuid);
 
     ProfileDto getMyProfile(String userUuid);
 
