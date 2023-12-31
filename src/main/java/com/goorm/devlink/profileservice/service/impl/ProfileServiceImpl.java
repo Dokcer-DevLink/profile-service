@@ -38,6 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void createProfile(ProfileDto profileDto) {
         ProfileEntity profileEntity = modelMapperUtil.convertToProfileEntity(profileDto);
+        profileEntity.setProfileType(ProfileType.BOTH);
         try {
             profileRepository.save(profileEntity);
 
