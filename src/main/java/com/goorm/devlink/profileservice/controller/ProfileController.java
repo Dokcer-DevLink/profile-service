@@ -13,14 +13,14 @@ import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.response.*;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -115,13 +115,12 @@ public class ProfileController {
 
     /** 프로필 리스트(검색) 조회 **/
     @GetMapping("/api/profile/list")
-    public ResponseEntity<ProfileSimpleCardListResponse> viewProfileList(@RequestParam("profileType") ProfileType profileType,
-                                                                         @RequestParam("keyword") String keyword,
-                                                                         @RequestParam("pageNumber") int pageNumber) {
+    public ResponseEntity<Slice<ProfileSimpleCard>> viewProfileList(@RequestParam("profileType") ProfileType profileType,
+                                                                    @RequestParam("keyword") String keyword,
+                                                                    @PageableDefault(page = 0, size = 8) Pageable pageable) {
 
-        Slice<ProfileSimpleCard> profileSimpleCardSlice = profileService.getSimpleCardSliceByTypeAndKeyword(profileType, keyword, pageNumber);
-        ProfileSimpleCardListResponse profileSimpleCardListResponse = ProfileSimpleCardListResponse.getInstance(profileSimpleCardSlice);
-        return new ResponseEntity<>(profileSimpleCardListResponse, HttpStatus.OK);
+        Slice<ProfileSimpleCard> profileSimpleCardSlice = profileService.getSimpleCardSliceByTypeAndKeyword(profileType, keyword, pageable);
+        return new ResponseEntity<>(profileSimpleCardSlice, HttpStatus.OK);
     }
 
     /** 추천 멘토/멘티 프로필 슬라이더 **/
