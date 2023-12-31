@@ -28,7 +28,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
     private final CalendarService calendarService;
-    private final S3UploadService s3UploadService;
+//    private final S3UploadService s3UploadService;
     private final MessageUtil messageUtil;
 
     /** 마이프로필 조회 **/
@@ -56,26 +56,39 @@ public class ProfileController {
     }
 
     /** 마이프로필 수정 **/
-    @PutMapping("/api/myprofile")
-    public ResponseEntity<MyProfileViewReponse> editMyProfile(@Valid @RequestBody ProfileEditRequest profileEditRequest,
-                                        @RequestHeader("userUuid") String userUuid) {
+//    @PutMapping("/api/myprofile")
+//    public ResponseEntity<MyProfileViewReponse> editMyProfile(@Valid @RequestBody ProfileEditRequest profileEditRequest,
+//                                        @RequestHeader("userUuid") String userUuid) {
+//
+//        if (userUuid.isEmpty()) {
+//            throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
+//        }
+//
+//        ProfileDto profileDto;
+//        if (profileEditRequest.getFileData() != null) {
+//            String profileImageUrl = s3UploadService.saveFile(profileEditRequest.getFileData(), userUuid);
+//            profileDto = profileService.updateProfile(profileEditRequest, userUuid, profileImageUrl);
+//        } else {
+//            profileDto = profileService.updateProfileWithoutImageUrl(profileEditRequest, userUuid);
+//        }
+//        List<ScheduleDto> scheduleDtos = calendarService.getCalendarScheduleDtos(userUuid);
+//        MyProfileViewReponse myProfileViewResponse = MyProfileViewReponse.getInstanceForResponse(profileDto, scheduleDtos);
+//
+//        return new ResponseEntity<>(myProfileViewResponse, HttpStatus.OK);
+////        return ResponseEntity.ok(ProfileMessageResponse.getInstance(userUuid, messageUtil.getProfileUpdateMessage()));
+//    }
 
+    @PutMapping("/api/myprofile")
+    public ResponseEntity<MyProfileViewReponse> editMyProfile(@Valid @RequestBody ProfileEditRequest request,
+                                                              @RequestHeader("userUuid") String userUuid) {
         if (userUuid.isEmpty()) {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
         }
 
-        ProfileDto profileDto;
-        if (profileEditRequest.getFileData() != null) {
-            String profileImageUrl = s3UploadService.saveFile(profileEditRequest.getFileData(), userUuid);
-            profileDto = profileService.updateProfile(profileEditRequest, userUuid, profileImageUrl);
-        } else {
-            profileDto = profileService.updateProfileWithoutImageUrl(profileEditRequest, userUuid);
-        }
+        ProfileDto profileDto = profileService.newUpdateProfile(request, userUuid);
         List<ScheduleDto> scheduleDtos = calendarService.getCalendarScheduleDtos(userUuid);
         MyProfileViewReponse myProfileViewResponse = MyProfileViewReponse.getInstanceForResponse(profileDto, scheduleDtos);
-
-        return new ResponseEntity<>(myProfileViewResponse, HttpStatus.OK);
-//        return ResponseEntity.ok(ProfileMessageResponse.getInstance(userUuid, messageUtil.getProfileUpdateMessage()));
+        return ResponseEntity.ok(myProfileViewResponse);
     }
 
     /** 마이프로필 삭제 **/

@@ -7,6 +7,7 @@ import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.repository.CalendarRepository;
 import com.goorm.devlink.profileservice.repository.ProfileRepository;
 import com.goorm.devlink.profileservice.service.ProfileService;
+import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
@@ -30,6 +31,8 @@ public class ProfileServiceImpl implements ProfileService {
     private final CalendarRepository calendarRepository;
     private final ModelMapperUtil modelMapperUtil;
     private final MessageUtil messageUtil;
+
+    private final S3UploadService s3UploadService;
 
     @Transactional
     @Override
@@ -71,6 +74,34 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (Exception e) {
             throw new RuntimeException(messageUtil.getProfileUpdateErrorMessage());
         }
+    }
+
+    @Override
+    @Transactional
+    public ProfileDto newUpdateProfile(ProfileEditRequest request, String userUuid) {
+        ProfileEntity profileEntity = Optional.ofNullable(profileRepository.findByUserUuid(userUuid)).orElseThrow(() -> {
+            throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
+
+        if (request.getFileData() == null) {
+            // 이미지 삭제
+            profileEntity.setProfileImageUrl(null);
+        } else {
+            if (profileEntity.getProfileImageUrl() == null) {
+                // 이미지 업로드
+                String profileImageUrl = s3UploadService.saveFile(request.getFileData(), userUuid);
+                profileEntity.setProfileImageUrl(profileImageUrl);
+            }
+        }
+
+        profileEntity.setNickname(request.getNickname());
+        profileEntity.setGithubAddress(request.getGithubAddress());
+        profileEntity.setIntroduction(request.getIntroduction());
+        profileEntity.setProfileType(request.getProfileType());
+        profileEntity.setAddress(request.getAddress());
+        profileEntity.setStacks(request.getStacks());
+
+        profileRepository.save(profileEntity);
+        return modelMapperUtil.convertToProfileDto(profileEntity);
     }
 
     @Transactional
