@@ -27,7 +27,7 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {/
     List<ProfileEntity> findProfileListByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword);
 
     @Transactional(readOnly = true)
-    @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
+    @Query("SELECT DISTINCT p FROM ProfileEntity p JOIN p.stacks s WHERE s = :keyword AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
     Slice<ProfileEntity> findSliceByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword, Pageable pageable);
 
     @Transactional(readOnly = true)
