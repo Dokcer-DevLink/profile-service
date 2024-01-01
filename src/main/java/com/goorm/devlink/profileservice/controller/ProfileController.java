@@ -143,7 +143,7 @@ public class ProfileController {
 
     /** 간단한 유저 정보(프로필이미지 URL, 닉네임) 조회 **/
     @GetMapping("/api/profile/chat")
-    public ResponseEntity<List<ProfileSimpleResponse>> getSimpleProfilesForChat(@RequestParam("userUuidList") List<String> userUuidList) {
+    public ResponseEntity<List<ProfileSimpleResponse>> getProfileSimpleInfo(@RequestParam("userUuidList") List<String> userUuidList) {
         if (userUuidList == null) {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
         }
