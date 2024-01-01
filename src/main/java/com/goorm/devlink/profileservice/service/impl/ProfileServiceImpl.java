@@ -160,11 +160,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(readOnly = true)
     @Override
     public List<ProfileSimpleCard> getSimpleCardListByUserUuidList(List<String> userUuidList) {
-        List<ProfileEntity> profileEntityList = new ArrayList<>();
-        for (String userUuid : userUuidList) {
-            ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
-            profileEntityList.add(profileEntity);
-        }
+        List<ProfileEntity> profileEntityList = profileRepository.findByUserUuidIn(userUuidList);
         List<ProfileSimpleCard> profileSimpleCardList = modelMapperUtil.mapProfileEntityListToProfileSimpleCard(profileEntityList);
         return profileSimpleCardList;
     }

@@ -20,6 +20,9 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {/
     ProfileEntity findByUserUuid(@Param("userUuid") String userUuid);
 
     @Transactional
+    List<ProfileEntity> findByUserUuidIn(@Param("userUuidList") List<String> userUuidList);
+
+    @Transactional
     @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
     List<ProfileEntity> findProfileListByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword);
 

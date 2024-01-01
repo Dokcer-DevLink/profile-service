@@ -169,10 +169,9 @@ public class ProfileController {
     }
 
     /** 받은 멘토링 신청 프로필 카드 리스트 조회 **/
-    @PostMapping("/api/profile/mentoringApplied")
-//    @GetMapping("/api/profile/mentoringApplied")
-    public ResponseEntity<List<ProfileSimpleCard>> getMentoringAppliedProfiles(@RequestBody MentoringProfileRequest mentoringProfileRequest) {
-        List<ProfileSimpleCard> simpleCardList = profileService.getSimpleCardListByUserUuidList(mentoringProfileRequest.getUserUuidList());
+    @GetMapping("/api/profile/mentoringApplied")
+    public ResponseEntity<List<ProfileSimpleCard>> getMentoringAppliedProfiles(@RequestParam("userUuidList") List<String> userUuidList) {
+        List<ProfileSimpleCard> simpleCardList = profileService.getSimpleCardListByUserUuidList(userUuidList);
         return new ResponseEntity<>(simpleCardList, HttpStatus.OK);
     }
 }
