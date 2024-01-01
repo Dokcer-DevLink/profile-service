@@ -8,6 +8,7 @@ import com.goorm.devlink.profileservice.service.ProfileService;
 import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.vo.request.EmptyScheduleRequest;
+import com.goorm.devlink.profileservice.vo.request.MentoringProfileRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileCreateRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.response.*;
@@ -165,5 +166,13 @@ public class ProfileController {
                 emptyScheduleRequest.getUnitTimeCount());
         EmptyScheduleResponse emptyScheduleResponse = EmptyScheduleResponse.builder().userUuidList(enableUserUuidList).build();
         return new ResponseEntity<>(emptyScheduleResponse, HttpStatus.OK);
+    }
+
+    /** 받은 멘토링 신청 프로필 카드 리스트 조회 **/
+    @PostMapping("/api/profile/mentoringApplied")
+//    @GetMapping("/api/profile/mentoringApplied")
+    public ResponseEntity<List<ProfileSimpleCard>> getMentoringAppliedProfiles(@RequestBody MentoringProfileRequest mentoringProfileRequest) {
+        List<ProfileSimpleCard> simpleCardList = profileService.getSimpleCardListByUserUuidList(mentoringProfileRequest.getUserUuidList());
+        return new ResponseEntity<>(simpleCardList, HttpStatus.OK);
     }
 }

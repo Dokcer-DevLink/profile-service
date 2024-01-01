@@ -19,6 +19,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -148,8 +149,22 @@ public class ProfileServiceImpl implements ProfileService {
         return profileSimpleCardSlice;
     }
 
+    @Transactional(readOnly = true)
+    @Override
     public List<ProfileSimpleCard> getSimpleCardListForRecommend(ProfileType profileType) {
         List<ProfileEntity> profileEntityList = profileRepository.findListByProfileType(profileType, PageRequest.of(0, 8));
+        List<ProfileSimpleCard> profileSimpleCardList = modelMapperUtil.mapProfileEntityListToProfileSimpleCard(profileEntityList);
+        return profileSimpleCardList;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProfileSimpleCard> getSimpleCardListByUserUuidList(List<String> userUuidList) {
+        List<ProfileEntity> profileEntityList = new ArrayList<>();
+        for (String userUuid : userUuidList) {
+            ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
+            profileEntityList.add(profileEntity);
+        }
         List<ProfileSimpleCard> profileSimpleCardList = modelMapperUtil.mapProfileEntityListToProfileSimpleCard(profileEntityList);
         return profileSimpleCardList;
     }

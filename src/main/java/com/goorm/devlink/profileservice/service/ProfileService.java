@@ -25,6 +25,8 @@ public interface ProfileService {
 
     List<ProfileSimpleCard> getSimpleCardListForRecommend(ProfileType profileType);
 
+    List<ProfileSimpleCard> getSimpleCardListByUserUuidList(List<String> userUuidList);
+
     void deleteProfileByUserUuid(String userUuid);
 
     ProfileDto newUpdateProfile(ProfileEditRequest profileEditRequest, String userUuid);
