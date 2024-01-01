@@ -4,6 +4,7 @@ import com.goorm.devlink.profileservice.dto.ProfileDto;
 import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
@@ -20,6 +21,8 @@ public interface ProfileService {
     ProfileDto getMyProfile(String userUuid);
 
     ProfileDto getProfileByUserUuid(String userUuid);
+
+    List<ProfileSimpleResponse> getProfileByUserUuidList(List<String> userUuidList);
 
     Slice<ProfileSimpleCard> getSimpleCardSliceByTypeAndKeyword(ProfileType profileType, String keyword, Pageable pageable);
 

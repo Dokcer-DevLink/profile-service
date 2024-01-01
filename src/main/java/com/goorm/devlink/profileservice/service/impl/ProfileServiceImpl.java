@@ -12,6 +12,7 @@ import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.util.ModelMapperUtil;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -139,6 +140,15 @@ public class ProfileServiceImpl implements ProfileService {
             throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuid)); });
         ProfileDto profileDto = modelMapperUtil.convertToProfileDto(profileEntity);
         return profileDto;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProfileSimpleResponse> getProfileByUserUuidList(List<String> userUuidList) {
+        List<ProfileEntity> profileEntityList = Optional.ofNullable(profileRepository.findByUserUuidIn(userUuidList)).orElseThrow(() -> {
+            throw new NoSuchElementException(messageUtil.getUserUuidNoSuchMessage(userUuidList.toString())); });
+        List<ProfileSimpleResponse> profileSimpleResponseList = modelMapperUtil.mapProfileEntityListToProfileSimpleResponseList(profileEntityList);
+        return profileSimpleResponseList;
     }
 
     @Transactional(readOnly = true)

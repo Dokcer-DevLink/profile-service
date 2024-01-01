@@ -142,14 +142,13 @@ public class ProfileController {
     }
 
     /** 간단한 유저 정보(프로필이미지 URL, 닉네임) 조회 **/
-    @GetMapping("/api/profile/simpleInfo")
-    public ResponseEntity<ProfileSimpleResponse> viewUserSimpleInfo(@RequestParam("userUuid") String userUuid) {
-        if (userUuid.isEmpty()) {
+    @GetMapping("/api/profile/chat")
+    public ResponseEntity<List<ProfileSimpleResponse>> getSimpleProfilesForChat(@RequestParam("userUuidList") List<String> userUuidList) {
+        if (userUuidList == null) {
             throw new NoSuchElementException(messageUtil.getUserUuidEmptyMessage());
         }
-        ProfileDto profileDto = profileService.getProfileByUserUuid(userUuid);
-        ProfileSimpleResponse profileSimpleResponse = new ProfileSimpleResponse(userUuid, profileDto.getProfileImageUrl(), profileDto.getNickname());
-        return new ResponseEntity<>(profileSimpleResponse, HttpStatus.OK);
+        List<ProfileSimpleResponse> profileSimpleResponseList = profileService.getProfileByUserUuidList(userUuidList);
+        return new ResponseEntity<>(profileSimpleResponseList, HttpStatus.OK);
     }
 
     /** 지정 시간 이외 가용 유저 리스트 조회 **/
