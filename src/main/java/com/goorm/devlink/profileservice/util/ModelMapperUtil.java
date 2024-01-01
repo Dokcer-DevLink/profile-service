@@ -7,6 +7,7 @@ import com.goorm.devlink.profileservice.entity.CalendarEntity;
 import com.goorm.devlink.profileservice.entity.ProfileEntity;
 import com.goorm.devlink.profileservice.entity.ScheduleEntity;
 import com.goorm.devlink.profileservice.vo.ProfileSimpleCard;
+import com.goorm.devlink.profileservice.vo.response.ProfileSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -41,6 +42,11 @@ public class ModelMapperUtil {
         return profileSimpleCard;
     }
 
+    public ProfileSimpleResponse convertToProfileSimpleResponse(ProfileEntity profileEntity) {
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        return new ProfileSimpleResponse(profileEntity.getUserUuid(), profileEntity.getProfileImageUrl(), profileEntity.getNickname());
+    }
+
     public List<ProfileDto> convertToProfileDtoList(List<ProfileEntity> profileEntityList) {
         List<ProfileDto> retProfileDtoList = new ArrayList<>();
         for (ProfileEntity profileEntity : profileEntityList) {
@@ -70,6 +76,13 @@ public class ModelMapperUtil {
                 .map(this::convertToProfileSimpleCardResponse)
                 .collect(Collectors.toList());
         return profileSimpleCardList;
+    }
+
+    public List<ProfileSimpleResponse> mapProfileEntityListToProfileSimpleResponseList(List<ProfileEntity> profileEntityList) {
+        List<ProfileSimpleResponse> profileSimpleResponseList = profileEntityList.stream()
+                .map(this::convertToProfileSimpleResponse)
+                .collect(Collectors.toList());
+        return profileSimpleResponseList;
     }
 
     public CalendarDto convertToCalendarDto(CalendarEntity calendarEntity) {
