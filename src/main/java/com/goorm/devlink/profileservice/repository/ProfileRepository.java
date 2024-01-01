@@ -16,18 +16,21 @@ import java.util.List;
 @Repository
 public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {//, ProfileRepositoryCustom {
 
-    @Transactional
+    @Transactional(readOnly = true)
     ProfileEntity findByUserUuid(@Param("userUuid") String userUuid);
 
-    @Transactional
+    @Transactional(readOnly = true)
+    List<ProfileEntity> findByUserUuidIn(@Param("userUuidList") List<String> userUuidList);
+
+    @Transactional(readOnly = true)
     @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
     List<ProfileEntity> findProfileListByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword);
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Query("SELECT DISTINCT p FROM ProfileEntity p, IN (p.stacks) s WHERE s LIKE %:keyword% AND (p.profileType = :profileType OR p.profileType = 'BOTH')")
     Slice<ProfileEntity> findSliceByStackKeyword(@Param("profileType") ProfileType profileType, @Param("keyword") String keyword, Pageable pageable);
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Query("SELECT p FROM ProfileEntity p WHERE p.profileType = :profileType OR p.profileType = 'BOTH'")
     List<ProfileEntity> findListByProfileType(@Param("profileType") ProfileType profileType, Pageable pageable);
 
