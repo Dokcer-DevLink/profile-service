@@ -29,6 +29,7 @@ public class CalendarServiceImpl implements CalendarService {
     private final ModelMapperUtil modelMapperUtil;
     private final MessageUtil messageUtil;
 
+    @Transactional(readOnly = true)
     @Override
     public List<ScheduleDto> getCalendarScheduleDtos(String userUuid) {
 
@@ -64,18 +65,11 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<String> findEnableUserUuidListByValidCalendar(List<String> userUuidList, LocalDateTime startTime, int unitTimeCount) {
         List<String> enableUserUuidList = new ArrayList<>();
-        List<CalendarEntity> calendarEntityList = new ArrayList<>();
-        for (String userUuid : userUuidList) {
-            ProfileEntity profileEntity = profileRepository.findByUserUuid(userUuid);
-            CalendarEntity calendarEntity = calendarRepository.findByProfileEntity(profileEntity);
-            calendarEntityList.add(calendarEntity);
-        }
+        List<ProfileEntity> profileEntityList = profileRepository.findByUserUuidIn(userUuidList);
+        List<CalendarEntity> calendarEntityList = calendarRepository.findByProfileEntityIn(profileEntityList);
         List<CalendarEntity> validCalendarEntityList = scheduleService.getValidCalendarEntityList(calendarEntityList, startTime, unitTimeCount);
-        for (CalendarEntity calendarEntity : validCalendarEntityList) {
-            ProfileEntity profileEntity = calendarEntity.getProfileEntity();
-            enableUserUuidList.add(profileEntity.getUserUuid());
-        }
-
+        validCalendarEntityList.iterator().forEachRemaining(calendarEntity ->
+                enableUserUuidList.add(calendarEntity.getProfileEntity().getUserUuid()));
         return enableUserUuidList;
     }
 }

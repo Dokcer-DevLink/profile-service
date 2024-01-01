@@ -5,10 +5,8 @@ import com.goorm.devlink.profileservice.dto.ScheduleDto;
 import com.goorm.devlink.profileservice.entity.constant.ProfileType;
 import com.goorm.devlink.profileservice.service.CalendarService;
 import com.goorm.devlink.profileservice.service.ProfileService;
-import com.goorm.devlink.profileservice.service.S3UploadService;
 import com.goorm.devlink.profileservice.util.MessageUtil;
 import com.goorm.devlink.profileservice.vo.request.EmptyScheduleRequest;
-import com.goorm.devlink.profileservice.vo.request.MentoringProfileRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileCreateRequest;
 import com.goorm.devlink.profileservice.vo.request.ProfileEditRequest;
 import com.goorm.devlink.profileservice.vo.response.*;
@@ -155,7 +153,7 @@ public class ProfileController {
     }
 
     /** 지정 시간 이외 가용 유저 리스트 조회 **/
-    @PostMapping("/api/profile/enableUsers")
+    @GetMapping("/api/profile/enableUsers")
     public ResponseEntity<EmptyScheduleResponse> findEnableUser(@RequestBody EmptyScheduleRequest emptyScheduleRequest) {
         //DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -169,7 +167,7 @@ public class ProfileController {
     }
 
     /** 받은 멘토링 신청 프로필 카드 리스트 조회 **/
-    @GetMapping("/api/profile/mentoringApplied")
+    @GetMapping("/api/profile/apply")
     public ResponseEntity<List<ProfileSimpleCard>> getMentoringAppliedProfiles(@RequestParam("userUuidList") List<String> userUuidList) {
         List<ProfileSimpleCard> simpleCardList = profileService.getSimpleCardListByUserUuidList(userUuidList);
         return new ResponseEntity<>(simpleCardList, HttpStatus.OK);
