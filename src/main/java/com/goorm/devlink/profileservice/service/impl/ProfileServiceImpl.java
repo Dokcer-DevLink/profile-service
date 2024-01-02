@@ -93,6 +93,11 @@ public class ProfileServiceImpl implements ProfileService {
                 // 이미지 업로드
                 String profileImageUrl = s3UploadService.saveFile(request.getFileData(), userUuid);
                 profileEntity.setProfileImageUrl(profileImageUrl);
+            } else {
+                if(!profileEntity.getProfileImageUrl().equals(request.getFileData())) {
+                    String profileImageUrl = s3UploadService.saveFile(request.getFileData(), userUuid);
+                    profileEntity.setProfileImageUrl(profileImageUrl);
+                }
             }
         }
 
