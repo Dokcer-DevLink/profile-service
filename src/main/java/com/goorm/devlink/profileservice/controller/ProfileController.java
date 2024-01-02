@@ -152,10 +152,8 @@ public class ProfileController {
     }
 
     /** 지정 시간 이외 가용 유저 리스트 조회 **/
-    @GetMapping("/api/profile/enableUsers")
+    @PostMapping("/api/profile/enableUsers")
     public ResponseEntity<EmptyScheduleResponse> findEnableUser(@RequestBody EmptyScheduleRequest emptyScheduleRequest) {
-        //DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
         List<String> receivedUserUuidList = emptyScheduleRequest.getUserUuidList();
         List<String> enableUserUuidList = calendarService.findEnableUserUuidListByValidCalendar(
                 receivedUserUuidList,
