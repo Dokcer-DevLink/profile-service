@@ -93,13 +93,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDateTime startTimeToValidCheck = scheduleEntity.getStartTime();
         LocalDateTime endTimeToValidCheck = startTimeToValidCheck.plusMinutes(scheduleEntity.getUnitTimeCount() * 30);
 
-        List<ScheduleEntity> allSchedules = scheduleRepository.findByCalendarEntity(scheduleEntity.getCalendarEntity());
-        for (ScheduleEntity existSchedule : allSchedules) {
-            LocalDateTime existStartTime = existSchedule.getStartTime();
-            LocalDateTime existEndTime = existStartTime.plusMinutes(existSchedule.getUnitTimeCount() * 30);
-            if (startTimeToValidCheck.isBefore(existEndTime) && endTimeToValidCheck.isAfter(existStartTime))
-                return false;
-        }
+//        List<ScheduleEntity> allSchedules = scheduleRepository.findByCalendarEntity(scheduleEntity.getCalendarEntity());
+//        for (ScheduleEntity existSchedule : allSchedules) {
+//            LocalDateTime existStartTime = existSchedule.getStartTime();
+//            LocalDateTime existEndTime = existStartTime.plusMinutes(existSchedule.getUnitTimeCount() * 30);
+//            if (startTimeToValidCheck.isBefore(existEndTime) && endTimeToValidCheck.isAfter(existStartTime))
+//                return false;
+//        }
         return true;
     }
 
