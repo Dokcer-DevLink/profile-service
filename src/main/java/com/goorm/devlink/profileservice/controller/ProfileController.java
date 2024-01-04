@@ -116,7 +116,7 @@ public class ProfileController {
     @GetMapping("/api/profile/list")
     public ResponseEntity<Slice<ProfileSimpleCard>> viewProfileList(@RequestParam("profileType") ProfileType profileType,
                                                                     @RequestParam("keyword") String keyword,
-                                                                    @PageableDefault(page = 0, size = 2) Pageable pageable) {
+                                                                    @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
         Slice<ProfileSimpleCard> profileSimpleCardSlice = profileService.getSimpleCardSliceByTypeAndKeyword(profileType, keyword, pageable);
         return new ResponseEntity<>(profileSimpleCardSlice, HttpStatus.OK);
